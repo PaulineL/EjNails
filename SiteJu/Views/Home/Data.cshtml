@@ -1,0 +1,21 @@
+﻿@model DataViewModel
+
+
+<h1>Données de l'utilisateur</h1>
+
+<h2>Nom</h2>
+<code>@Html.DisplayFor(model => model.Name)</code>
+
+<h2>@Html.LabelFor(model => model.LastName)</h2>
+<code>@Html.EditorFor(model => model.LastName)</code>
+
+<h2>Date de naissance</h2>
+<code>@Model.BirthDate</code>
+
+<h2>Passion</h2>
+<code>
+    @foreach (var passion in Model.Passion)
+    {
+        @passion <br />
+    }
+</code>

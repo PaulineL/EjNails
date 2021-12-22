@@ -1,0 +1,43 @@
+﻿<Properties StartupConfiguration="{D7B0520F-6D1E-40BF-80EC-82BC77571545}|Default">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SiteJu/Views/Shared/_footer.cshtml">
+    <Files>
+      <File FileName="SiteJu/Views/Home/Index.cshtml" Line="57" Column="44" />
+      <File FileName="SiteJu/Views/Home/Prestations.cshtml" />
+      <File FileName="SiteJu/Views/Shared/_footer.cshtml" Line="23" Column="37" />
+      <File FileName="SiteJu/wwwroot/css/design.css" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="SiteJu" expanded="True">
+            <Node name="SiteJu" expanded="True">
+              <Node name="Dependencies" expanded="True">
+                <Node name="PackageDependencies" expanded="True" />
+              </Node>
+              <Node name="Controllers" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Properties" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="Home" expanded="True" />
+                <Node name="Shared" expanded="True">
+                  <Node name="_footer.cshtml" selected="True" />
+                </Node>
+              </Node>
+              <Node name="wwwroot" expanded="True">
+                <Node name="css" expanded="True" />
+                <Node name="img" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.SiteJu PreferredExecutionTarget="/Applications/Safari.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
+</Properties>

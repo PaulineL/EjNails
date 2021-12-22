@@ -1,0 +1,36 @@
+﻿<header>
+    <!-- Navigation-->
+
+    <nav id="navbar"class="menu navbar navbar-expand-lg fixed-top navbar-big">
+        <div class="collapse navbar-nav navbar-collapse justify-content-center" id="navbarNavAltMarkup">
+            @Html.ActionLink("Accueil", "Index", "Home", null, new { @class = "btn-accueil nav-link" })
+            <img class="diamond" src="img/dessin-rose.jpg" />
+            @*<a class="nav-link text-dark" asp-area="" asp-controller="Form" asp-action="Index">Utilisateurs</a>*@
+            @Html.ActionLink("Réalisations", "Realisations", "Home", null, new { @class = "nav-link text-dark" })
+            <img class="diamond" src="img/dessin-rose.jpg" />
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Prestations">Prestations</a>
+            <img class="diamond" src="img/dessin-rose.jpg" />
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+        </div>
+    </nav>
+
+    <script>
+        var lastScrollTop = 0;
+
+        window.addEventListener("scroll", function () {
+            var st = window.pageYOffset || document.documentElement.scrollTop;
+            if (!document.documentElement.scrollTop) { //!document.documentElement.scrollTop === (!document.documentElement.scrollTop == 0)
+                this.document.getElementById("navbar").classList.add("navbar-big")
+            } else {
+                this.document.getElementById("navbar").classList.remove("navbar-big")
+            }
+            if (st > lastScrollTop) {
+                this.document.getElementById("navbar").classList.add("navbar-hide");
+            } else {
+                this.document.getElementById("navbar").classList.remove("navbar-hide");
+            }
+            lastScrollTop = st <= 0 ? 0 : st; 
+        }, false);
+    </script>
+</header>
+

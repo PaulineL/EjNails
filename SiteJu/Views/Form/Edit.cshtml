@@ -1,0 +1,28 @@
+﻿@model User
+
+@using (Html.BeginForm("Edit", "Form", FormMethod.Post))
+{
+    <input type="hidden" name="Id" value="@Model.Id" />
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.LastName)
+        @Html.EditorFor(model => model.LastName, new { @class = "form-control", placeholder = "last name" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.EditorFor(model => model.Name, new { @class = "form-control", placeholder = "name" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.UserName)
+        @Html.EditorFor(model => model.UserName, new { @class = "form-control", placeholder = "last name" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Role)
+        @Html.DropDownList("Role", Html.GetEnumSelectList(typeof(Role)), "Séléctionner le rôle", new { @class = "form-control" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Editer l'utilisateur</button>
+}
