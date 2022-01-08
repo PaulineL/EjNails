@@ -27,6 +27,8 @@ namespace SiteJu
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.Configure<MailOption>(Configuration.GetSection("Mail"));
+            services.Configure<Web>(Configuration.GetSection("Web"));
+
 
             var mailProvider = Configuration["Mail:Provider"];
             if (mailProvider == "Sendgrid")

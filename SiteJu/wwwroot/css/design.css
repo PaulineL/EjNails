@@ -3,40 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel&display=swap');
 
 @font-face {
-    font-family: "Biancha";
-    src: url("../font/Biancha.otf");
-}
-@font-face {
-    font-family: "HelloMarisca";
-    src: url("../font/HelloMarisca.otf");
-}
-
-@font-face {
-    font-family: "font";
-    src: url("../font/font.ttf");
-}
-
-@font-face {
-    font-family: "WhiteAngelica";
-    src: url("../font/WhiteAngelica.ttf");
-}
-
-@font-face {
-    font-family: "Beauty";
-    src: url("../font/Beauty.otf");
-}
-
-@font-face {
-    font-family: "Winterfun";
-    src: url("../font/Winterfun.otf");
-}
-
-@font-face {
-    font-family: "Moon";
-    src: url("../font/Moon.otf");
-}
-
-@font-face {
     font-family: "Latolight";
     src: url("../font/Lato-Light.ttf");
 }
@@ -50,15 +16,14 @@
 }
 
 
-
 body {
     font-family: "Montserrat-ExtraLight";
 }
 /* PAGE ACCUEIL*/
 .title-page {
-    padding-bottom: 3%;
-    margin-top: 5%;
-    /*    background: url("../img/degrade.png") no-repeat center center;*/
+/*    padding-top: 3%;
+*/    padding-bottom: 3%;
+      margin-top: 3%;
     background-size: 50% auto;
 /*    text-shadow: 0px 0px 19px rgba(255, 99, 185, 1);
 */    color: black;
@@ -99,6 +64,7 @@ body {
 
 .sous_logo {
     font-size: 20px;
+    font-family: 'Cinzel';
     color: grey;
 }
 
@@ -122,13 +88,22 @@ font-weight: bold;
     /*    -webkit-backdrop-filter:blur(10px);*/
     background-color: white;
     height: 57px;
+    font-size:1.25rem;
 }
 .navbar-big {
     height: 80px !important;
 }
 /* Sections */
-.title-accueil {
+/*.title-accueil {
     font-family: 'Cinzel', serif;
+}*/
+
+.profil {
+    padding-bottom: 5%;
+}
+
+.salon {
+    background-color: #efd3cf;
 }
 
 .diamond {
@@ -139,18 +114,22 @@ font-weight: bold;
 .diamond-text {
     display: flex;
 }
+
+.photo {
+
+max-height: 400px;
+
+}
+
 .taille {
     min-height: 48rem !important;
 }
 /* PAGE MES PRESTATIONS */
 
 .prestations {
-/*    background-image: url('../img/pink.jpg');*/
+    background-color: #efd3cf;
+    padding: 3%;
     font-size: 1.25rem;
-    padding: 1%;
-}
-.table {
-    font-family: "Montserrat-ExtraLight";
 }
 .roses {
     width: 50px;
@@ -158,7 +137,6 @@ font-weight: bold;
 }
 
 .title-presta {
-    font-family: "Cinzel";
     padding-top: 10%;
     padding-bottom: 3%;
 
@@ -173,17 +151,8 @@ font-weight: bold;
 /* PAGE MES REALISATIONS*/
 
 .realisations {
-    padding-bottom: 5%;
+    padding-bottom: 2%;
 }
-.realisation {
-    transition: transform .1s;
-}
-.realisation:hover {
-    -ms-transform: scale(1.2); /* IE 9 */
-    -webkit-transform: scale(1.2); /* Safari 3-8 */
-    transform: scale(1.2);
-}
-
 /*PAGE CONTACT*/
 
 .contact {
@@ -191,6 +160,7 @@ font-weight: bold;
     padding-right: 17%;
     padding-left: 17%;
     padding-bottom: 3%;
+    font-size: 1.25rem;
 }
 .btn-contact
 {

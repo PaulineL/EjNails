@@ -19,9 +19,14 @@ namespace SiteJu.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult Index()
+        public IActionResult Index([FromServices]IOptions<Web> options)
         {
-            return View();
+            HomeViewModel VM = new()
+            {
+                ProfilPicture = options.Value.ProfilPicture
+            };
+
+            return View(VM);
         }
 
         [HttpGet("Contact")]
@@ -31,14 +36,13 @@ namespace SiteJu.Controllers
         }
 
         [HttpPost("Contact")]
-        public async Task<IActionResult> Contact(Contact contact, [FromServices] IMailSender _mailSender)
+        public async Task<IActionResult> Contact(HomeViewModel vm, [FromServices] IMailSender _mailSender)
         {
-            bool result = await _mailSender.SendMail(contact.Email, $"{contact.LastName} {contact.Name}", contact.Message);
+            bool result = await _mailSender.SendMail(vm.Contact.Email, $"{vm.Contact.LastName} {vm.Contact.Name}", vm.Contact.Message);
 
             if (result)
             {
                 ViewData["HasContactFormSend"] = true;
-
             }
             else
             {

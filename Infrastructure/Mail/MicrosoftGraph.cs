@@ -8,11 +8,13 @@ namespace Infrastructure.Mail
 {
 	public class MicrosoftGraph : IMailSender
 	{
+        private readonly IOptions<MailOption> _mailOptions;
         private GraphHelper _graphHelper;
         private string _token;
+
         public MicrosoftGraph(IOptions<MailOption> mailOptions) 
 		{
-            GraphHelper.Initialize(mailOptions.Value.MSGraph.ApplicationId, "Mail.Send", (dvi) => _token = dvi.)
+            _mailOptions = mailOptions;
         }
 
         public async Task<bool> SendMail(string recipient, string senderDisplayName, string content)
