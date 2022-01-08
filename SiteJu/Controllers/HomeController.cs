@@ -40,10 +40,10 @@ namespace SiteJu.Controllers
         {
             var msg = new SendGridMessage
             {
-                From = new EmailAddress("paulinelopez31650@gmail.com", contact.Name + contact.LastName),
+                From = new EmailAddress(_mailOptions.Value.Contact, $"{contact.Name} {contact.LastName}"),
                 PlainTextContent = contact.Message,
                 Subject = "Prise de contact : EJ Nails",
-                ReplyTo = new EmailAddress(contact.Email, contact.Name + " " + contact.LastName)
+                ReplyTo = new EmailAddress(contact.Email, $"{contact.Name} {contact.LastName}")
             };
             msg.AddTo(new EmailAddress(_mailOptions.Value.Contact));
 
