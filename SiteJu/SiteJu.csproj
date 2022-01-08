@@ -13,7 +13,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.1" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />

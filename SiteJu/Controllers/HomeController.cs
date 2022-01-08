@@ -64,20 +64,6 @@ namespace SiteJu.Controllers
    
         }
 
-
-        [HttpGet("Data")]
-        public IActionResult Data()
-        {
-            var viewModel = new DataViewModel
-            {
-                Name = "Powline",
-                LastName = "LowPez",
-                BirthDate = DateTime.Parse("05/12/1991"),
-                Passion = new List<string> { "Bouffe", "Manger", "Dévorer", "Nouriture" }
-            };
-            return View(viewModel);
-        }
-
         [HttpGet("Prestations")]
         public IActionResult Prestations()
         {
