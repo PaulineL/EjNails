@@ -57,9 +57,9 @@ body {
 /* PAGE ACCUEIL*/
 .title-page {
     font-family: "NothingYouCouldDo";
-    padding-top: 3%;
-    padding-bottom: 3%;
-    margin-top: 5%;
+/*    padding-top: 3%;
+*/    padding-bottom: 3%;
+      margin-top: 5%;
     /*    background: url("../img/degrade.png") no-repeat center center;*/
     background-size: 50% auto;
     color: black;
@@ -140,7 +140,7 @@ body {
     display: flex;
 }
 .taille {
-    min-height: 35rem !important;
+    min-height: 48rem !important;
 }
 /* PAGE MES PRESTATIONS */
 
@@ -163,7 +163,6 @@ body {
     padding-right: 17%;
     padding-left: 17%;
     padding-top: 2%;
-    padding-bottom: 4%;
 }
 
 /* PAGE MES REALISATIONS*/
@@ -179,6 +178,12 @@ body {
 
 /*PAGE CONTACT*/
 
+.contact {
+    background-color: white;
+    padding-right: 17%;
+    padding-left: 17%;
+    padding-bottom: 3%;
+}
 .btn-contact
 {
     margin-top:3%;

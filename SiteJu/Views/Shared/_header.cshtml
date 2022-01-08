@@ -3,14 +3,17 @@
 
     <nav id="navbar"class="menu navbar navbar-expand-lg fixed-top navbar-light navbar-big">
         <div class="collapse navbar-nav navbar-collapse justify-content-center" id="navbarNavAltMarkup">
-            @Html.ActionLink("Accueil", "Index", "Home", null, new { @class = "nav-link" })
+            @*@Html.ActionLink("Accueil", "Index", "Home", null, new { @class = "nav-link" })*@
+            <a class="nav-link" href="#accueil">Accueil</a>
+
             <img class="diamond" src="img/dessin-rose.jpg" />
             @*<a class="nav-link text-dark" asp-area="" asp-controller="Form" asp-action="Index">Utilisateurs</a>*@
-            @Html.ActionLink("Réalisations", "Realisations", "Home", null, new { @class = "nav-link" })
+            <a class="nav-link" href="#realisations">Réalisations</a>
+@*            @Html.ActionLink("Réalisations", "Realisations", "Home", null, new { @class = "nav-link" })
+*@            <img class="diamond" src="img/dessin-rose.jpg" />
+            <a class="nav-link" href="#prestations">Prestations</a>
             <img class="diamond" src="img/dessin-rose.jpg" />
-            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Prestations">Prestations</a>
-            <img class="diamond" src="img/dessin-rose.jpg" />
-            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
+            <a class="nav-link" href="#contact">Contact</a>
         </div>
     </nav>
 

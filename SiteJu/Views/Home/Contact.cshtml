@@ -22,7 +22,7 @@ else if (ViewData.ContainsKey("IlYAeuuneerrurdanslenvoiedumail")
 @using (Html.BeginForm("Contact", "Home", FormMethod.Post))
 {
     <div>
-        <div class="container" style="background-color:white;padding-right: 17%; padding-left: 17%;">
+        <div class="container contact">
             <div class="form-group">
                 @Html.LabelFor(model => model.LastName, new { @class = "form-label" })
                 @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
