@@ -40,9 +40,9 @@ namespace SiteJu.Controllers
         {
             var msg = new SendGridMessage
             {
-                From = new EmailAddress(_mailOptions.Value.Contact, $"{contact.Name} {contact.LastName}"),
+                From = new EmailAddress(_mailOptions.Value.Contact),
                 PlainTextContent = contact.Message,
-                Subject = "Prise de contact : EJ Nails",
+                Subject = $"[Web] Prise de contact : {contact.Name} {contact.LastName}",
                 ReplyTo = new EmailAddress(contact.Email, $"{contact.Name} {contact.LastName}")
             };
             msg.AddTo(new EmailAddress(_mailOptions.Value.Contact));
@@ -57,7 +57,7 @@ namespace SiteJu.Controllers
             }
             else
             {
-                ViewData["IlYAeuuneerrurdanslenvoiedumail"] = true;
+                ViewData["HasMailError"] = true;
             }
 
             return View("Index");
