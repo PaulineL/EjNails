@@ -144,6 +144,13 @@ body {
 }
 /* PAGE MES PRESTATIONS */
 
+.prestations {
+    background-image: url('../img/cadre.jpg');
+    font-size: 1.25rem;
+    background-size: 70%;
+    background-repeat: no-repeat;
+    padding: 8%;
+}
 .table {
     font-family: "Montserrat-ExtraLight";
 }
