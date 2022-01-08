@@ -60,7 +60,7 @@ namespace SiteJu.Controllers
                 ViewData["IlYAeuuneerrurdanslenvoiedumail"] = true;
             }
 
-            return View();
+            return View("Index");
    
         }
 
