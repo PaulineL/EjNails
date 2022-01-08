@@ -42,6 +42,7 @@ namespace SiteJu.Controllers
             {
                 From = new EmailAddress(_mailOptions.Value.Contact),
                 PlainTextContent = contact.Message,
+                HtmlContent = $"<p>{contact.Message}</p>",
                 Subject = $"[Web] Prise de contact : {contact.Name} {contact.LastName}",
                 ReplyTo = new EmailAddress(contact.Email, $"{contact.Name} {contact.LastName}")
             };
