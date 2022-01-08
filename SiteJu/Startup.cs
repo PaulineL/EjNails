@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Infrastructure.Mail;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -9,7 +10,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SendGrid.Extensions.DependencyInjection;
-using SiteJu.Configuration;
 
 namespace SiteJu
 {
@@ -26,11 +26,21 @@ namespace SiteJu
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.Configure<Mail>(Configuration.GetSection("Mail"));
-            services.AddSendGrid(client =>
+            services.Configure<MailOption>(Configuration.GetSection("Mail"));
+
+            var mailProvider = Configuration["Mail:Provider"];
+            if (mailProvider == "Sendgrid")
             {
-                client.ApiKey = Configuration["Mail:ApiKey"];
-            });
+                services.AddSendGrid(client =>
+                {
+                    client.ApiKey = Configuration["Mail:ApiKey"];
+                });
+                services.AddTransient<IMailSender, SendgridMailSender>();
+            }
+            else if (mailProvider == "Microsoft.Graph")
+            {
+                services.AddTransient<IMailSender, MicrosoftGraph>();
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

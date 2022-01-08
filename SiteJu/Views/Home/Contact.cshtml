@@ -11,8 +11,8 @@
         Message bien envoyé !
     </div>
 }
-else if (ViewData.ContainsKey("IlYAeuuneerrurdanslenvoiedumail")
-     && (bool)ViewData["IlYAeuuneerrurdanslenvoiedumail"])
+else if (ViewData.ContainsKey("HasMailError")
+     && (bool)ViewData["HasMailError"])
 {
     <div class="alert alert-danger" role="alert">
         Une erreur s'est produite lors de l'envoie du mél
