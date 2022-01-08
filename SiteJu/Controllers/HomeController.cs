@@ -26,7 +26,6 @@ namespace SiteJu.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
-            ViewBag.HasContactFormSend = true;
             return View();
         }
 
@@ -37,7 +36,7 @@ namespace SiteJu.Controllers
         }
 
         [HttpPost("Contact")]
-        public async Task<IActionResult> EnvoyerContact(Contact contact)
+        public async Task<IActionResult> Contact(Contact contact)
         {
             var msg = new SendGridMessage
             {
@@ -49,10 +48,19 @@ namespace SiteJu.Controllers
             msg.AddTo(new EmailAddress(_mailOptions.Value.Contact));
 
             var response = await _sendgridClient.SendEmailAsync(msg);
-            var bodyresp = response.Body.ReadAsStringAsync().Result;
+            var sendgridResponse = response.Body.ReadAsStringAsync().Result;
 
-            return RedirectToAction("Index");
+            if (string.IsNullOrEmpty(sendgridResponse))
+            {
+                ViewData["HasContactFormSend"] = true;
 
+            }
+            else
+            {
+                ViewData["IlYAeuuneerrurdanslenvoiedumail"] = true;
+            }
+
+            return View();
    
         }
 

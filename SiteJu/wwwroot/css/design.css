@@ -40,20 +40,31 @@
     font-family: "Latolight";
     src: url("../font/Lato-Light.ttf");
 }
-
-/* PAGE ACCUEIL*/
-.title-page {
-    font-family: "Cinzel";
-    padding-top: 4%;
-    padding-bottom: 5%;
-    margin-top: 7%;
-    background-color: #FFCAEE;
-    background: url("../img/degrade.png") no-repeat center center;
-    background-size: 50% auto;
-    color: white;
-    text-shadow: 1px 0px 3px rgba(0,0,0,0.69)
+@font-face {
+    font-family: "NothingYouCouldDo";
+    src: url("../font/NothingYouCouldDo.ttf");
+}
+@font-face {
+    font-family: "Montserrat-ExtraLight";
+    src: url("../font/Montserrat-ExtraLight.ttf");
 }
 
+
+
+body {
+    font-family: "Montserrat-ExtraLight";
+}
+/* PAGE ACCUEIL*/
+.title-page {
+    font-family: "NothingYouCouldDo";
+    padding-top: 3%;
+    padding-bottom: 3%;
+    margin-top: 5%;
+    /*    background: url("../img/degrade.png") no-repeat center center;*/
+    background-size: 50% auto;
+    color: black;
+/*    text-shadow: 1px 0px 3px rgba(0,0,0,0.69)*/
+}
 
 /* Logo */
 .appear {
@@ -102,10 +113,6 @@
     text-transform: uppercase;
     letter-spacing: 0.07em;
 }
-.btn-accueil
-{
-    color: pink;
-}
 .navbar-hide {
     transform: translate(0, -57px);
 }
@@ -137,6 +144,9 @@
 }
 /* PAGE MES PRESTATIONS */
 
+.table {
+    font-family: "Montserrat-ExtraLight";
+}
 .roses {
     width: 50px;
     height: 50px;
@@ -173,12 +183,15 @@
 {
     margin-top:3%;
 }
+.textarea {
+    min-height: calc(1.5em + 9.5rem + 2px) !important;
+}
 /* FOOTER */
 .titre-footer {
     font-weight: bold;
     text-transform: uppercase;
+    font-family: "NothingYouCouldDo";
 }
 footer {
-    /*    background-color: #D8B5FF;*/
-    background-image: url("../img/cadre.jpg");
+    background-color: #efd3cf;
 }
