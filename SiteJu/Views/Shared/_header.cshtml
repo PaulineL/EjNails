@@ -1,24 +1,30 @@
 ﻿<header>
     <!-- Navigation-->
 
-    <nav id="navbar"class="menu navbar navbar-expand-lg fixed-top navbar-light navbar-big">
-        <div class="collapse navbar-nav navbar-collapse justify-content-center" id="navbarNavAltMarkup">
-            @*@Html.ActionLink("Accueil", "Index", "Home", null, new { @class = "nav-link" })*@
-            <a class="nav-link" href="#accueil">Accueil</a>
+    <nav class="menu nav nav-pills flex-column flex-sm-row justify-content-end">
+        <a class="nav-link text-dark" href="#accueil">Accueil</a>
+        <a class="nav-link text-dark" href="#realisations">Réalisations</a>
+        <a class="nav-link text-dark" href="#prestations">Prestations</a>
+        <a class="nav-link text-dark" href="#contact">Contact</a>
+    </nav>
 
-            <img class="diamond" src="img/dessin-rose.jpg" />
-            @*<a class="nav-link text-dark" asp-area="" asp-controller="Form" asp-action="Index">Utilisateurs</a>*@
-            <a class="nav-link" href="#realisations">Réalisations</a>
-@*            @Html.ActionLink("Réalisations", "Realisations", "Home", null, new { @class = "nav-link" })*@
-            <img class="diamond" src="img/dessin-rose.jpg" />
+    <!--<nav id="navbar"class="menu navbar navbar-expand-lg fixed-top navbar-light navbar-big">
+        <div class="collapse navbar-nav navbar-collapse justify-content-center" id="navbarNavAltMarkup">-->
+    @*@Html.ActionLink("Accueil", "Index", "Home", null, new { @class = "nav-link" })*@
+    <!--<a class="nav-link" href="#accueil">Accueil</a>
+
+    <img class="diamond" src="img/dessin-rose.jpg" />-->
+    @*<a class="nav-link text-dark" asp-area="" asp-controller="Form" asp-action="Index">Utilisateurs</a>*@
+    <!--<a class="nav-link" href="#realisations">Réalisations</a>-->
+    @*            @Html.ActionLink("Réalisations", "Realisations", "Home", null, new { @class = "nav-link" })*@
+    <!--<img class="diamond" src="img/dessin-rose.jpg" />
             <a class="nav-link" href="#prestations">Prestations</a>
             <img class="diamond" src="img/dessin-rose.jpg" />
             <a class="nav-link" href="#contact">Contact</a>
         </div>
-    </nav>
+    </nav>-->
 
-    <script>
-        var lastScrollTop = 0;
+    <script>var lastScrollTop = 0;
 
         window.addEventListener("scroll", function () {
             var st = window.pageYOffset || document.documentElement.scrollTop;
@@ -32,8 +38,7 @@
             } else {
                 this.document.getElementById("navbar").classList.remove("navbar-hide");
             }
-            lastScrollTop = st <= 0 ? 0 : st; 
-        }, false);
-    </script>
+            lastScrollTop = st <= 0 ? 0 : st;
+        }, false);</script>
 </header>
 

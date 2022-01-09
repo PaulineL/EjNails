@@ -30,7 +30,8 @@ namespace Infrastructure.Mail
             {
                 Subject = $"[Web] Prise de contact : {senderDisplayName}",
                 Body = new ItemBody() { Content = $"<p>{content}</p>", ContentType = BodyType.Html },
-                ToRecipients = new List<Recipient> { new Recipient { EmailAddress = new EmailAddress { Address = _mailOptions.Value.Contact } } }
+                ToRecipients = new List<Recipient> { new Recipient { EmailAddress = new EmailAddress { Address = _mailOptions.Value.Contact } } },
+                ReplyTo = new List<Recipient> { new Recipient { EmailAddress = new EmailAddress { Address = recipient, Name = senderDisplayName } } }
             })
                 .Request()
                 .PostResponseAsync();
