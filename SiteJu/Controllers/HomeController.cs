@@ -2,25 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using SiteJu.Configuration;
 using SiteJu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
+using Infrastructure.Mail;
 
 namespace SiteJu.Controllers
 {
     [Route("/")]
     public class HomeController : Controller
     {
-        public IOptions<Mail> _mailOptions { get; }
-        public ISendGridClient _sendgridClient { get; }
-
-        public HomeController(IOptions<Mail> mailOptions, ISendGridClient sendgridClient)
+        public HomeController()
         {
-            _mailOptions = mailOptions;
-            _sendgridClient = sendgridClient;
         }
 
         [HttpGet("")]
@@ -36,22 +31,11 @@ namespace SiteJu.Controllers
         }
 
         [HttpPost("Contact")]
-        public async Task<IActionResult> Contact(Contact contact)
+        public async Task<IActionResult> Contact(Contact contact, [FromServices] IMailSender _mailSender)
         {
-            var msg = new SendGridMessage
-            {
-                From = new EmailAddress(_mailOptions.Value.Contact),
-                PlainTextContent = contact.Message,
-                HtmlContent = $"<p>{contact.Message}</p>",
-                Subject = $"[Web] Prise de contact : {contact.Name} {contact.LastName}",
-                ReplyTo = new EmailAddress(contact.Email, $"{contact.Name} {contact.LastName}")
-            };
-            msg.AddTo(new EmailAddress(_mailOptions.Value.Contact));
+            bool result = await _mailSender.SendMail(contact.Email, $"{contact.LastName} {contact.Name}", contact.Message);
 
-            var response = await _sendgridClient.SendEmailAsync(msg);
-            var sendgridResponse = response.Body.ReadAsStringAsync().Result;
-
-            if (string.IsNullOrEmpty(sendgridResponse))
+            if (result)
             {
                 ViewData["HasContactFormSend"] = true;
 

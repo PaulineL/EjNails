@@ -11,12 +11,19 @@
     <None Remove="SendGridClient" />
     <None Remove="jQuery" />
     <None Remove="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" />
+    <None Remove="Microsoft.Graph" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Graph" Version="4.14.0" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Infrastructure\Infrastructure.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
 </Project>
