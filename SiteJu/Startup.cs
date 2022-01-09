@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Infrastructure.Mail;
+﻿using Infrastructure.Mail;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SendGrid.Extensions.DependencyInjection;
 using SiteJu.Configuration;
+using SiteJu.Middleware;
 
 namespace SiteJu
 {
@@ -38,11 +35,15 @@ namespace SiteJu
                 {
                     client.ApiKey = Configuration["Mail:ApiKey"];
                 });
-                services.AddTransient<IMailSender, SendgridMailSender>();
+                services.AddSingleton<IMailSender, SendgridMailSender>();
             }
             else if (mailProvider == "Microsoft.Graph")
             {
-                services.AddTransient<IMailSender, MicrosoftGraph>();
+                services.AddSingleton<IMailSender, MicrosoftGraph>();
+            }
+            else
+            {
+                services.AddSingleton<IMailSender, MailSenderDefault>();
             }
         }
 
@@ -60,7 +61,10 @@ namespace SiteJu
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
+
+            app.Map(PathString.FromUriComponent("/robots.txt"), robot => robot.UseMiddleware<RobotMiddleware>());
 
             app.UseRouting();
 
