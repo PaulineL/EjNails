@@ -8,6 +8,7 @@ using Microsoft.Extensions.Options;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Infrastructure.Mail;
+using SiteJu.Configuration;
 
 namespace SiteJu.Controllers
 {

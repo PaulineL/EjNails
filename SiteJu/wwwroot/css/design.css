@@ -21,13 +21,11 @@ body {
 }
 /* PAGE ACCUEIL*/
 .title-page {
-/*    padding-top: 3%;
-*/    padding-bottom: 3%;
-      margin-top: 3%;
+  padding-bottom: 3%;
+  margin-top: 3%;
     background-size: 50% auto;
-/*    text-shadow: 0px 0px 19px rgba(255, 99, 185, 1);
-*/    color: black;
-    /*    text-shadow: 1px 0px 3px rgba(0,0,0,0.69)*/
+    color: black;
+
 }
 
 /* Logo */
@@ -88,7 +86,6 @@ font-weight: bold;
     /*    -webkit-backdrop-filter:blur(10px);*/
     background-color: white;
     height: 57px;
-    font-size:1.25rem;
 }
 .navbar-big {
     height: 80px !important;
@@ -129,7 +126,6 @@ max-height: 400px;
 .prestations {
     background-color: #efd3cf;
     padding: 3%;
-    font-size: 1.25rem;
 }
 .roses {
     width: 50px;
@@ -160,7 +156,6 @@ max-height: 400px;
     padding-right: 17%;
     padding-left: 17%;
     padding-bottom: 3%;
-    font-size: 1.25rem;
 }
 .btn-contact
 {
@@ -176,4 +171,5 @@ max-height: 400px;
 }
 footer {
     background-color: #efd3cf;
+    padding-bottom: 2%;
 }
