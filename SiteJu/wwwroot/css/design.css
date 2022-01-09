@@ -56,14 +56,13 @@ body {
 }
 /* PAGE ACCUEIL*/
 .title-page {
-    font-family: "NothingYouCouldDo";
-/*    padding-top: 3%;
-*/    padding-bottom: 3%;
-      margin-top: 5%;
+    padding-bottom: 3%;
+    margin-top: 5%;
     /*    background: url("../img/degrade.png") no-repeat center center;*/
     background-size: 50% auto;
-    color: black;
-/*    text-shadow: 1px 0px 3px rgba(0,0,0,0.69)*/
+/*    text-shadow: 0px 0px 19px rgba(255, 99, 185, 1);
+*/    color: black;
+    /*    text-shadow: 1px 0px 3px rgba(0,0,0,0.69)*/
 }
 
 /* Logo */
@@ -94,12 +93,12 @@ body {
 }
 .logo {
     font-family: 'Cinzel', serif;
-    text-shadow: 1px 0px 3px rgba(0,0,0,0.69)
+    text-shadow: 0px 3px 8px rgba(255, 99, 185, 1);
+    font-size: 3.5rem;
 }
 
 .sous_logo {
     font-size: 20px;
-    font-family: 'WhiteAngelica';
     color: grey;
 }
 
@@ -112,6 +111,7 @@ body {
     font-family: "Latolight";
     text-transform: uppercase;
     letter-spacing: 0.07em;
+font-weight: bold;
 }
 .navbar-hide {
     transform: translate(0, -57px);
@@ -145,11 +145,9 @@ body {
 /* PAGE MES PRESTATIONS */
 
 .prestations {
-    background-image: url('../img/cadre.jpg');
+/*    background-image: url('../img/pink.jpg');*/
     font-size: 1.25rem;
-    background-size: 70%;
-    background-repeat: no-repeat;
-    padding: 8%;
+    padding: 1%;
 }
 .table {
     font-family: "Montserrat-ExtraLight";
@@ -174,6 +172,9 @@ body {
 
 /* PAGE MES REALISATIONS*/
 
+.realisations {
+    padding-bottom: 5%;
+}
 .realisation {
     transition: transform .1s;
 }
@@ -202,7 +203,6 @@ body {
 .titre-footer {
     font-weight: bold;
     text-transform: uppercase;
-    font-family: "NothingYouCouldDo";
 }
 footer {
     background-color: #efd3cf;
