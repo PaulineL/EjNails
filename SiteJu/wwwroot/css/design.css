@@ -88,24 +88,6 @@ body {
     letter-spacing: 0.07em;
     font-weight: bold;
 }
-/*.navbar-hide {
-    transform: translate(0, -57px)!important;
-}
-#navbar {
-    transition: transform .35s ease-in-out,height .25s ease-in-out,background-color .45s ease-in-out !important;
-    backdrop-filter: blur(20px)!important;*/
-    /*    -webkit-backdrop-filter:blur(10px);*/
-    /*background-color: white!important;
-    height: 57px!important;
-}
-.navbar-big {
-    height: 80px !important;
-}*/
-
-/* Sections */
-/*.title-accueil {
-    font-family: 'Cinzel', serif;
-}*/
 
 /* Section 1 */
 .profil {
