@@ -19,8 +19,16 @@
 body {
     font-family: "Montserrat-ExtraLight";
 }
-/* PAGE ACCUEIL*/
-.title-section {
+
+.salon {
+    background-image: url('../assets/img/banniere.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 18% !important;
+}
+
+ /* PAGE ACCUEIL*/
+    .title-section {
   padding-bottom: 3%;
   margin-top: 3%;
     background-size: 50% auto;
@@ -44,6 +52,21 @@ body {
     /*    background-color: #ffe4e1;*/
 }
 
+.logo {
+    font-family: 'Cinzel', serif;
+    font-size: 3.5rem;
+}
+
+.sous_logo {
+    font-size: 20px;
+    font-family: 'Cinzel';
+    color: grey;
+}
+.diamond {
+    width: 60px;
+    height: 30px;
+}
+
 .cadre {
     margin-right: 20%;
     margin-left: 20%;
@@ -52,17 +75,6 @@ body {
     background-color: rgba(255, 255, 255, 0.8);*/
     color: white;
 
-}
-.logo {
-    font-family: 'Cinzel', serif;
-    text-shadow: 0px 3px 8px rgba(255, 99, 185, 1);
-    font-size: 3.5rem;
-}
-
-.sous_logo {
-    font-size: 20px;
-    font-family: 'Cinzel';
-    color: grey;
 }
 
 /* Menu */
@@ -95,27 +107,21 @@ body {
     font-family: 'Cinzel', serif;
 }*/
 
+/* Section 1 */
 .profil {
     padding-bottom: 5%;
-}
-
-.salon {
+    padding-top: 5%;
     background-color: #efd3cf;
-}
-
-.diamond {
-    width: 30px;
-    height: 30px;
-}
-
-.diamond-text {
-    display: flex;
 }
 
 .photo {
 
 max-height: 400px;
 
+}
+
+.padding-right {
+    padding-right:2%;
 }
 
 .taille {
@@ -139,8 +145,8 @@ max-height: 400px;
 }
 
 .padding-presta {
-    padding-right: 17%;
-    padding-left: 17%;
+    padding-right: 22%;
+    padding-left: 22%;
     padding-top: 2%;
 }
 
