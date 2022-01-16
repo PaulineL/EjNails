@@ -12,11 +12,13 @@
     <None Remove="jQuery" />
     <None Remove="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" />
     <None Remove="Microsoft.Graph" />
+    <None Remove="Microsoft.jQuery.Unobtrusive.Ajax" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.1" />
     <PackageReference Include="Microsoft.Graph" Version="4.14.0" />
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig" />

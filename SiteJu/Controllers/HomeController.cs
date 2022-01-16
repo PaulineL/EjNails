@@ -15,10 +15,6 @@ namespace SiteJu.Controllers
     [Route("/")]
     public class HomeController : Controller
     {
-        public HomeController()
-        {
-        }
-
         [HttpGet("")]
         public IActionResult Index([FromServices]IOptions<Web> options)
         {
@@ -51,21 +47,8 @@ namespace SiteJu.Controllers
             }
 
             return View("Index");
-   
-        }
 
-        [HttpGet("Prestations")]
-        public IActionResult Prestations()
-        {
-            return View();
         }
-
-        [HttpGet("Realisations")]
-        public IActionResult Realisations()
-        {
-            return View();
-        }
-
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
@@ -74,3 +57,4 @@ namespace SiteJu.Controllers
         }
     }
 }
+

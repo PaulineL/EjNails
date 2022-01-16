@@ -5,6 +5,24 @@
 
 <partial name="_logo" />
 
+
+@if (ViewData.ContainsKey("HasContactFormSend")
+&& (bool)ViewData["HasContactFormSend"])
+{
+    <div class="alert alert-primary alert-dismissible fade show" role="alert">
+        <strong>Message bien envoyé !</strong>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+else if (ViewData.ContainsKey("HasMailError")
+     && (bool)ViewData["HasMailError"])
+{
+    <div id="contact" class="alert alert-danger text-center" role="alert">
+        Une erreur s'est produite lors de l'envoi du mail.
+    </div>
+}
+
+
 @*PROFIL*@
 <section class="profil appear">
     <div class="container-fluid p-0">
@@ -13,12 +31,12 @@
                 <img class="photo img-fluid" src="assets/img/Juliee.jpg" />
             </div>
             <div class="col-lg-6 my-auto showcase-text align-items-center padding-right">
-                    <h2 class="title-accueil">Julie</h2>
-                    <p class="lead mb-0">
-                        Je prends soin de vos mains du lundi au vendredi à Montastruc-La-Conseillère.
-                        Formée depuis juillet 2021, je réalise régulièrement des formations pour me mettre à jour sur les tendances actuelles.
-                        N'hésitez pas à me contacter pour prendre rendez-vous avec moi via le formulaire de contact ou par message privé sur Instagram.
-                    </p>
+                <h2 class="title-accueil">Julie</h2>
+                <p class="lead mb-0">
+                    Je prends soin de vos mains du lundi au vendredi à Montastruc-La-Conseillère.
+                    Formée depuis juillet 2021, je réalise régulièrement des formations pour me mettre à jour sur les tendances actuelles.
+                    N'hésitez pas à me contacter pour prendre rendez-vous avec moi via le formulaire de contact ou par message privé sur Instagram.
+                </p>
             </div>
         </div>
     </div>

@@ -12,6 +12,7 @@
     <None Remove="Microsoft.Extensions.DependencyInjection" />
     <None Remove="Microsoft.Graph" />
     <None Remove="Azure.Identity" />
+    <None Remove="Microsoft.jQuery.Unobtrusive.Ajax" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mail\" />
@@ -21,5 +22,6 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.Graph" Version="4.14.0" />
     <PackageReference Include="Azure.Identity" Version="1.5.0" />
+    <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
   </ItemGroup>
 </Project>
