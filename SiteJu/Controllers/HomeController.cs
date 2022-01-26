@@ -26,12 +26,6 @@ namespace SiteJu.Controllers
             return View(VM);
         }
 
-        [HttpGet("Contact")]
-        public IActionResult Contact()
-        {
-            return View();
-        }
-
         [HttpPost("Contact")]
         public async Task<IActionResult> Contact(HomeViewModel vm, [FromServices] IMailSender _mailSender)
         {
@@ -45,8 +39,8 @@ namespace SiteJu.Controllers
             {
                 ViewData["HasMailError"] = true;
             }
-            return View("Index");
 
+            return View("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
