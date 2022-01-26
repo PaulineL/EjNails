@@ -33,7 +33,7 @@ namespace SiteJu
             {
                 services.AddSendGrid(client =>
                 {
-                    client.ApiKey = Configuration["Mail:ApiKey"];
+                    client.ApiKey = Configuration["Mail:Sendgrid:ApiKey"];
                 });
                 services.AddSingleton<IMailSender, SendgridMailSender>();
             }
@@ -56,8 +56,7 @@ namespace SiteJu
             }
             else
             {
-                app.UseDeveloperExceptionPage();
-                //app.UseExceptionHandler("/Home/Error");
+                app.UseExceptionHandler("/Home/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
