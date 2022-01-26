@@ -45,7 +45,6 @@ namespace SiteJu.Controllers
             {
                 ViewData["HasMailError"] = true;
             }
-
             return View("Index");
 
         }
