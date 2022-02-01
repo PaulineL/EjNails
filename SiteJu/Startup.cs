@@ -8,6 +8,12 @@ using Microsoft.Extensions.Hosting;
 using SendGrid.Extensions.DependencyInjection;
 using SiteJu.Configuration;
 using SiteJu.Middleware;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using SiteJu.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Identity.Web.UI;
+using Microsoft.Identity.Web;
 
 namespace SiteJu
 {
@@ -23,7 +29,42 @@ namespace SiteJu
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services
+                .AddAuthentication()
+                .AddMicrosoftIdentityWebApp(options =>
+                {
+                    Configuration.Bind("AzureAd", options);
+
+                    options.Events = new Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectEvents()
+                    {
+                        OnAuthenticationFailed = async e =>
+                        {
+
+                        },
+                        OnAuthorizationCodeReceived = async e =>
+                        {
+
+                        },
+                        OnRemoteFailure = async e =>
+                        {
+
+                        },
+                        OnAccessDenied = async e =>
+                        {
+
+                        },
+                        OnRedirectToIdentityProvider = async e =>
+                        {
+
+                        }
+                    };
+                });
+
+
+            services.AddControllersWithViews()
+                .AddMicrosoftIdentityUI()
+                .AddRazorRuntimeCompilation();
+
             services.Configure<MailOption>(Configuration.GetSection("Mail"));
             services.Configure<Web>(Configuration.GetSection("Web"));
 
@@ -45,6 +86,18 @@ namespace SiteJu
             {
                 services.AddSingleton<IMailSender, MailSenderDefault>();
             }
+
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<SiteJuIdentityDbContext>(options =>
+                options.UseSqlite(connectionString));
+
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddDefaultIdentity<IdentityUser>()
+                .AddEntityFrameworkStores<SiteJuIdentityDbContext>();
+
+
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -69,9 +122,11 @@ namespace SiteJu
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

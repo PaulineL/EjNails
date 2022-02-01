@@ -1,0 +1,24 @@
+﻿@font-face {
+    font-family: "Montserrat-ExtraLight";
+    src: url("../font/Montserrat-ExtraLight.ttf");
+}
+
+body {
+    background-color: #efd3cf;
+    font-family: "Montserrat-ExtraLight";
+    font-size:14px;
+}
+.centered {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.admin{
+text-align:center;
+}
+
+.form {
+display:grid;
+}
