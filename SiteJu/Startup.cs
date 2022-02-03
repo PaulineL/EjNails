@@ -64,6 +64,26 @@ namespace SiteJu
                         OnRedirectToIdentityProvider = async e =>
                         {
 
+                        },
+                        OnMessageReceived = async e =>
+                        {
+
+                        },
+                        OnTicketReceived = async e =>
+                        {
+
+                        },
+                        OnTokenResponseReceived = async e =>
+                        {
+
+                        },
+                        OnTokenValidated = async e =>
+                        {
+
+                        },
+                        OnUserInformationReceived = async e =>
+                        {
+
                         }
                     };
                 });
@@ -98,13 +118,9 @@ namespace SiteJu
             }
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<SiteJuIdentityDbContext>(options =>
-                options.UseSqlite(connectionString));
 
-            services.AddDatabaseDeveloperPageExceptionFilter();
-
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<SiteJuIdentityDbContext>();
+            services.AddDbContext<SiteJuIdentityDbContext>(options => options.UseSqlite(connectionString));
+            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<SiteJuIdentityDbContext>();
 
 
             services.AddRazorPages();

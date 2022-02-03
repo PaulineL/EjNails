@@ -12,7 +12,7 @@ using SiteJu.Data;
 namespace SiteJu.Controllers
 {
     [Route("/admin")]
-    //[Authorize]
+    [Authorize]
     public class AdminController : Controller
     {
         [HttpGet("")]
