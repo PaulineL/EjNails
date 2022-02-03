@@ -12,14 +12,49 @@ namespace SiteJu.Data
 
             var clients = new Client[]
             {
-            new Client{Firstname="Pauline",Lastname="Lopez",Telephone="0670809090",Email="popo@hotmail.fr"},
-            new Client{Firstname="Olivier",Lastname="Houssin",Telephone="0690809090",Email="olive@hotmail.fr"},
+                new Client{ID = 1, Firstname="Pauline",Lastname="Lopez",Telephone="0670809090",Email="popo@hotmail.fr"},
+                new Client{ID = 2, Firstname="Olivier",Lastname="Houssin",Telephone="0690809090",Email="olive@hotmail.fr"},
 
             };
-            foreach (Client c in clients)
+
+            var prestations = new[]
             {
-                context.Clients.Add(c);
-            }
+                new Prestation
+                {
+                    ID = 1,
+                    Prestations = "Ongles de pouff",
+                    Price = 10
+                },
+                new Prestation
+                {
+                    ID = 2,
+                    Prestations = "Ongles de luxe",
+                    Price = 100
+                }
+            };
+
+            var rdvs = new[]
+            {
+                new RDV
+                {
+                    Id = 1,
+                    ClientId = 1,
+                    PrestationId = 1,
+                    At = DateTime.Now.AddDays(1)
+                },
+                new RDV
+                {
+                    Id = 2,
+                    ClientId = 2,
+                    PrestationId = 2,
+                    At = DateTime.Now.AddDays(2).AddHours(-4)
+                }
+            };
+
+            context.Clients.AddRange(clients);
+            context.Prestations.AddRange(prestations);
+            context.RDVS.AddRange(rdvs);
+
             context.SaveChanges();
         }
     }

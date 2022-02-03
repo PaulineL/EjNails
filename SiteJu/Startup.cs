@@ -69,7 +69,9 @@ namespace SiteJu
                 });
 
 
-            services.AddControllersWithViews()
+            services
+                .AddControllersWithViews()
+                .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles)
                 .AddMicrosoftIdentityUI()
                 .AddRazorRuntimeCompilation();
 

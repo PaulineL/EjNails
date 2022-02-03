@@ -3,21 +3,33 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         //C'est du 1 fevrier 2022 au 7 fevrier 2022
-        fetch("/admin/RDV?start=2022-01-02&end=2022-07-02").then(rdvs => {
+        //fetch("/admin/RDV?start=2022-01-02&end=2022-07-02").then(rdvs => {
             //afficher les RDVS dans le calendrier
-        });
+        //});
 
 
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
             locale: 'fr',
+            eventSources: [{
+                url: '/admin/rdv',
+                eventDataTransform: ev => {
+                    let at = new Date(ev.at);
+                    return {
+                        start: at,
+                        end: at.setHours(at.getHours() + 1),
+                        title: ev.client.lastname + " " + ev.client.firstname
+                    }
+                }
+            }],
             headerToolbar: {
                 start: 'prev, next today',
                 center: 'title',
                 end: 'dayGridMonth,timeGridWeek'
-            },
-            events: evenements
+            }
         });
+        console.log(calendar);
         calendar.render();
-    });</script>
+    });
+</script>
