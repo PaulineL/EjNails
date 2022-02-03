@@ -37,7 +37,7 @@ namespace SiteJu.Migrations.Reservation
 
                     b.HasKey("ID");
 
-                    b.ToTable("Client", (string)null);
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("SiteJu.Models.Prestation", b =>
@@ -54,7 +54,7 @@ namespace SiteJu.Migrations.Reservation
 
                     b.HasKey("ID");
 
-                    b.ToTable("Prestation", (string)null);
+                    b.ToTable("Prestations");
                 });
 
             modelBuilder.Entity("SiteJu.Models.RDV", b =>
@@ -69,13 +69,7 @@ namespace SiteJu.Migrations.Reservation
                     b.Property<string>("Date")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("Firstname")
-                        .HasColumnType("TEXT");
-
                     b.Property<string>("Heure")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Name_prestaitons")
                         .HasColumnType("TEXT");
 
                     b.Property<int?>("PrestationID")
@@ -87,7 +81,7 @@ namespace SiteJu.Migrations.Reservation
 
                     b.HasIndex("PrestationID");
 
-                    b.ToTable("RDV", (string)null);
+                    b.ToTable("RDVS");
                 });
 
             modelBuilder.Entity("SiteJu.Models.RDV", b =>

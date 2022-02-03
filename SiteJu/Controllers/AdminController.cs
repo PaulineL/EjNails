@@ -17,13 +17,20 @@ namespace SiteJu.Controllers
         [HttpGet("")]
         public IActionResult Index([FromServices] ReservationContext context)
         {
-            return View(context.Clients.ToList());
+            return View();
         }
 
         [HttpGet("Office")]
         public IActionResult Office()
         {
-            return View("Office");
+            return View();
+        }
+
+        [HttpGet("RDV")]
+        public IActionResult GetRDV([FromQuery(Name = "start")] DateTime start, [FromQuery(Name = "end")] DateTime end, [FromServices] ReservationContext context)
+        {
+            var filteredRendezVous = context.RDVS.Where(rdv => start  <= rdv.At && rdv.At <= end);
+            return Json(filteredRendezVous);
         }
     }
 }

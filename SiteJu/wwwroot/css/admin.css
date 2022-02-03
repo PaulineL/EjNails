@@ -3,11 +3,11 @@
     src: url("../font/Montserrat-ExtraLight.ttf");
 }
 
-body {
+/*body {
     background-color: #efd3cf;
     font-family: "Montserrat-ExtraLight";
     font-size:14px;
-}
+}*/
 .centered {
     position: fixed;
     top: 50%;

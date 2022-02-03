@@ -22,10 +22,6 @@ namespace SiteJu.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Client>().ToTable("Client");
-            modelBuilder.Entity<RDV>().ToTable("RDV");
-            modelBuilder.Entity<Prestation>().ToTable("Prestation");
-
         }
 
     }
