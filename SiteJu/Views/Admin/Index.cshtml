@@ -1,17 +1,15 @@
 ﻿<div id='calendar'></div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        //C'est du 1 fevrier 2022 au 7 fevrier 2022
-        //fetch("/admin/RDV?start=2022-01-02&end=2022-07-02").then(rdvs => {
-            //afficher les RDVS dans le calendrier
-        //});
-
-
+    document.addEventListener('DOMContentLoaded', () => {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
             initialView: 'timeGridWeek',
             locale: 'fr',
+            slotMinTime: '08:00:00',
+            slotMaxTime: '20:00:00',
+            weekends: false,
+            aspectRatio: 1.5,
             eventSources: [{
                 url: '/admin/rdv',
                 eventDataTransform: ev => {
@@ -29,7 +27,6 @@
                 end: 'dayGridMonth,timeGridWeek'
             }
         });
-        console.log(calendar);
         calendar.render();
     });
 </script>
