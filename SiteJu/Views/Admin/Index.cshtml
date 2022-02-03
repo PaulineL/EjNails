@@ -1,2 +1,30 @@
-﻿@{
-}
+﻿@using SiteJu.Models
+@model IEnumerable<Client>
+
+<p>Les clients</p>
+<table>
+    <tr>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+    </tr>
+
+        @foreach (var client in Model)
+            {
+        <tr>
+            <td>
+                @client.Firstname
+            </td>
+            <td>
+                @client.Lastname
+            </td>
+            <td>
+                @client.Email
+            </td>
+            <td>
+                @client.Telephone
+            </td>
+        </tr>
+            }
+</table>

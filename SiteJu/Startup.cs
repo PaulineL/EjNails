@@ -14,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
+using SiteJu.Data;
 
 namespace SiteJu
 {
@@ -29,6 +30,13 @@ namespace SiteJu
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Context Réservation
+            services.AddDbContext<ReservationContext>(options =>
+               options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+
+            // fltre d'exception de la bdddd réservar
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             services
                 .AddAuthentication()
                 .AddMicrosoftIdentityWebApp(options =>
