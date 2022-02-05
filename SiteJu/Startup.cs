@@ -16,6 +16,10 @@ using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
 using SiteJu.Data;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SiteJu.Helpers;
 
 namespace SiteJu
 {
@@ -34,15 +38,25 @@ namespace SiteJu
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                .AddAuthentication("AzureAD")
                 .AddMicrosoftIdentityWebApp(Configuration, "AzureAd", "AzureAD", cookieScheme: null, displayName: "Azure AD");
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireClaim(ClaimTypes.AuthenticationMethod, "AzureAD");
+                    policy.RequireAuthenticatedUser();
+                });
+            });
 
             services
                 .AddControllersWithViews()
                 .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles)
                 .AddMicrosoftIdentityUI()
                 .AddRazorRuntimeCompilation();
+
+            services.AddRazorPages();
 
             services.Configure<MailOption>(Configuration.GetSection("Mail"));
             services.Configure<Web>(Configuration.GetSection("Web"));
@@ -65,6 +79,7 @@ namespace SiteJu
             {
                 services.AddSingleton<IMailSender, MailSenderDefault>();
             }
+            services.AddTransient<IEmailSender, IdentityMailSender>();
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
@@ -73,9 +88,6 @@ namespace SiteJu
 
             // Context Réservation
             services.AddDbContext<ReservationContext>(options => options.UseSqlite(connectionString));
-
-
-            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -104,6 +116,9 @@ namespace SiteJu
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true, true)));
+                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true, true)));
+
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

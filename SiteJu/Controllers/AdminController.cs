@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteJu.Data;
 using SiteJu.Models;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace SiteJu.Controllers
 {
     [Route("/admin")]
-    //[Authorize]
+    [Authorize("Admin")]
     public class AdminController : Controller
     {
         [HttpGet("")]
-        public IActionResult Index([FromServices] ReservationContext context)
+        public IActionResult Index([FromServices] SignInManager<IdentityUser> SignInManager, [FromServices] UserManager<IdentityUser> UserManager)
         {
             return View();
         }

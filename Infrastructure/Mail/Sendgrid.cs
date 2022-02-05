@@ -16,14 +16,14 @@ namespace Infrastructure.Mail
             _sendgridClient = sendgridClient;
         }
 
-        public async Task<bool> SendMail(string recipient, string displayName, string content)
+        public async Task<bool> SendMail(string recipient, string displayName, string content, string subject)
         {
             var msg = new SendGridMessage
             {
                 From = new EmailAddress(_mailOptions.Value.Sender),
                 PlainTextContent = content,
                 HtmlContent = $"<p>{content}</p>",
-                Subject = $"[Web] Prise de contact : {displayName}",
+                Subject = subject,
                 ReplyTo = new EmailAddress(recipient, $"{displayName}")
             };
             msg.AddTo(new EmailAddress(_mailOptions.Value.Contact));
