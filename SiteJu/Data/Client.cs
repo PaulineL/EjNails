@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SiteJu.Models
+namespace SiteJu.Data
 {
 	public class Client
 	{

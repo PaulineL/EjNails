@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteJu.Data;
+using SiteJu.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -21,16 +22,88 @@ namespace SiteJu.Controllers
             return View();
         }
 
-        [HttpGet("Office")]
-        public IActionResult Office()
+        [HttpGet("Prestations")]
+        public IActionResult Prestations([FromServices] ReservationContext context)
+        {
+            var prestations = context.Prestations.ToList();
+            return View(prestations);          
+        }
+
+        [HttpGet("CreatePrestation")]
+        public IActionResult CreatePrestation()
         {
             return View();
+        }
+
+        [HttpPost("CreatePrestation")]
+        public IActionResult CreatePrestation(PrestationViewModel prestationVM, [FromServices] ReservationContext context)
+        {
+            var prestation = new Prestation
+            {
+                Prestations = prestationVM.Name,
+                Price = prestationVM.Price,
+                Duration = TimeSpan.FromMinutes(prestationVM.Duration)
+            };
+
+            context.Prestations.Add(prestation);
+            context.SaveChanges();
+            if (prestation.ID != 0)
+            {
+                return Redirect("Prestations");
+            }
+            else
+            {
+                return View(prestation);
+            }
+        }
+
+
+
+        [HttpGet("EditPrestation")]
+        public IActionResult EditPrestation([FromQuery]int id, [FromServices] ReservationContext context)
+        {
+            var prestation = context.Prestations.Find(id);
+            var prestVm = new PrestationViewModel
+            {
+                Id = prestation.ID,
+                Duration = Convert.ToInt32(prestation.Duration.TotalMinutes),
+                Name = prestation.Prestations,
+                Price = prestation.Price
+            };
+            return View(prestVm);
+        }
+
+        [HttpPost("EditPrestation")]
+        public IActionResult EditPrestation(PrestationViewModel prestationVM, [FromServices] ReservationContext context)
+        {
+            var prestation = new Prestation
+            {
+                ID = prestationVM.Id,
+                Prestations = prestationVM.Name,
+                Price = prestationVM.Price,
+                Duration = TimeSpan.FromMinutes(prestationVM.Duration)
+            };
+
+            context.Prestations.Update(prestation);
+            context.SaveChanges();
+
+            return Redirect("Prestations");
+        }
+
+        [HttpPost("DeletePrestation")]
+        public IActionResult DeletePrestation(int id, [FromServices] ReservationContext context)
+        {
+            context.Prestations.Remove(new Prestation { ID = id });
+            context.SaveChanges();
+
+            return Redirect("Prestations");
+
         }
 
         [HttpGet("RDV")]
         public IActionResult GetRDV([FromQuery(Name = "start")] DateTime start, [FromQuery(Name = "end")] DateTime end, [FromServices] ReservationContext context)
         {
-            var filteredRendezVous = context.RDVS.Include(rdv => rdv.Client).Where(rdv => start  <= rdv.At && rdv.At <= end);
+            var filteredRendezVous = context.RDVS.Include(rdv => rdv.Client).Where(rdv => start <= rdv.At && rdv.At <= end);
             var result = filteredRendezVous.Select(rdv => new
             {
                 start = rdv.At,
@@ -38,6 +111,7 @@ namespace SiteJu.Controllers
                 title = rdv.Client.Firstname,
 
             });
+
             return Json(result);
         }
 

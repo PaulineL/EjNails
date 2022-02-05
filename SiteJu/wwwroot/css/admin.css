@@ -22,3 +22,7 @@ text-align:center;
 .form {
 display:grid;
 }
+
+.menu_left {
+    display: inherit;
+}

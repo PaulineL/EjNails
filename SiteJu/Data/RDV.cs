@@ -1,5 +1,5 @@
 ﻿using System;
-namespace SiteJu.Models
+namespace SiteJu.Data
 {
 	public class RDV
 	{
