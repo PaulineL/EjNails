@@ -16,6 +16,7 @@ using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
 using SiteJu.Data;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Security.Claims;
 
 namespace SiteJu
 {
@@ -37,14 +38,14 @@ namespace SiteJu
                 .AddAuthentication("AzureAD")
                 .AddMicrosoftIdentityWebApp(Configuration, "AzureAd", "AzureAD", cookieScheme: null, displayName: "Azure AD");
 
-            // services.AddAuthorization(options =>
-            // {
-            //     options.AddPolicy("Admin", policy =>
-            //     {
-            //         policy.AuthenticationSchemes.Add("AzureAD");
-            //         policy.RequireAuthenticatedUser();
-            //     });
-            // });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy =>
+                {
+                    policy.RequireClaim(ClaimTypes.AuthenticationMethod, "AzureAD");
+                    policy.RequireAuthenticatedUser();
+                });
+            });
 
             services
                 .AddControllersWithViews()
