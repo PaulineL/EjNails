@@ -18,8 +18,6 @@ namespace SiteJu.Controllers
         [HttpGet("")]
         public IActionResult Index([FromServices] SignInManager<IdentityUser> SignInManager, [FromServices] UserManager<IdentityUser> UserManager)
         {
-            var auth = SignInManager.IsSignedIn(User);
-            var usr = UserManager.GetUserName(User);
             return View();
         }
 
