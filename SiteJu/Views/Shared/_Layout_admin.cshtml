@@ -24,7 +24,13 @@
 
     @{ IgnoreSection("Scripts"); }
     <header>
-        <partial name="_LoginPartial" />
+        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+            <div class="menu_left">
+                <a class="nav-link text-dark" asp-action="">Planning</a>
+                <a class="nav-link text-dark" asp-action="Prestations">Prestations</a>
+            </div>
+            <partial name="_LoginPartial" />
+        </nav>
     </header>
     <main role="main" class="pb-3">
         @*Dans le menu du haut, ajouter la login partial (idealiement a gauche comme dans le projet de test d'hier')*@

@@ -1,5 +1,4 @@
 ﻿using System;
-using SiteJu.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace SiteJu.Data

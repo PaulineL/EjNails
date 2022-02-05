@@ -1,0 +1,35 @@
+﻿@model IEnumerable<SiteJu.Data.Prestation>
+
+<div class="container">
+
+    <h1>Bienvenue sur vos prestations</h1>
+
+    <button class="btn btn-primary" asp-action="CreatePrestation">Ajouter une prestation</button>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Durée</th>
+                    <th scope="col">Prix</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var presta in Model)
+                {
+                <tr>
+                    <td>@presta.Prestations</td>
+                    <td>@presta.Duration</td>
+                    <td>@presta.Price €</td>
+                    <td><button class="btn btn-success" asp-action="EditPrestation" asp-route-id="@presta.ID">Edit</button></td>
+                    <td>
+                        <form method = "post" asp-action="DeletePrestation">
+                            @Html.Hidden("id", presta.ID)
+                            <button class="btn btn-danger" type="submit">Supprimer</button>
+                        </form>
+                    </td>
+
+                </tr>
+                }
+            </tbody>
+        </table>
+</div>
