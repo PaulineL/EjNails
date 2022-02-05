@@ -34,15 +34,25 @@ namespace SiteJu
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                .AddAuthentication("AzureAD")
                 .AddMicrosoftIdentityWebApp(Configuration, "AzureAd", "AzureAD", cookieScheme: null, displayName: "Azure AD");
 
+            // services.AddAuthorization(options =>
+            // {
+            //     options.AddPolicy("Admin", policy =>
+            //     {
+            //         policy.AuthenticationSchemes.Add("AzureAD");
+            //         policy.RequireAuthenticatedUser();
+            //     });
+            // });
 
             services
                 .AddControllersWithViews()
                 .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles)
                 .AddMicrosoftIdentityUI()
                 .AddRazorRuntimeCompilation();
+
+            services.AddRazorPages();
 
             services.Configure<MailOption>(Configuration.GetSection("Mail"));
             services.Configure<Web>(Configuration.GetSection("Web"));
@@ -73,9 +83,6 @@ namespace SiteJu
 
             // Context Réservation
             services.AddDbContext<ReservationContext>(options => options.UseSqlite(connectionString));
-
-
-            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
