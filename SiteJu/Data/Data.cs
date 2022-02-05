@@ -8,13 +8,15 @@ namespace SiteJu.Data
     {
         public static void Initialize(ReservationContext context)
         {
-            context.Database.EnsureCreated();
+            if (!context.Database.EnsureCreated())
+            {
+                return;
+            }
 
             var clients = new Client[]
             {
                 new Client{ID = 1, Firstname="Pauline",Lastname="Lopez",Telephone="0670809090",Email="popo@hotmail.fr"},
-                new Client{ID = 2, Firstname="Olivier",Lastname="Houssin",Telephone="0690809090",Email="olive@hotmail.fr"},
-
+                new Client{ID = 2, Firstname="Olivier",Lastname="Houssin",Telephone="0690809090",Email="olive@hotmail.fr"}
             };
 
             var prestations = new[]

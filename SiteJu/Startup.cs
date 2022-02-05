@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
 using SiteJu.Data;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 
 namespace SiteJu
 {
@@ -30,63 +31,11 @@ namespace SiteJu
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Context Réservation
-            services.AddDbContext<ReservationContext>(options =>
-               options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
-            // fltre d'exception de la bdddd réservar
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services
-                .AddAuthentication()
-                .AddMicrosoftIdentityWebApp(options =>
-                {
-                    Configuration.Bind("AzureAd", options);
-
-                    options.Events = new Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectEvents()
-                    {
-                        OnAuthenticationFailed = async e =>
-                        {
-
-                        },
-                        OnAuthorizationCodeReceived = async e =>
-                        {
-
-                        },
-                        OnRemoteFailure = async e =>
-                        {
-
-                        },
-                        OnAccessDenied = async e =>
-                        {
-
-                        },
-                        OnRedirectToIdentityProvider = async e =>
-                        {
-
-                        },
-                        OnMessageReceived = async e =>
-                        {
-
-                        },
-                        OnTicketReceived = async e =>
-                        {
-
-                        },
-                        OnTokenResponseReceived = async e =>
-                        {
-
-                        },
-                        OnTokenValidated = async e =>
-                        {
-
-                        },
-                        OnUserInformationReceived = async e =>
-                        {
-
-                        }
-                    };
-                });
+                .AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+                .AddMicrosoftIdentityWebApp(Configuration, "AzureAd", "AzureAD", cookieScheme: null, displayName: "Azure AD");
 
 
             services
@@ -122,6 +71,9 @@ namespace SiteJu
             services.AddDbContext<SiteJuIdentityDbContext>(options => options.UseSqlite(connectionString));
             services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<SiteJuIdentityDbContext>();
 
+            // Context Réservation
+            services.AddDbContext<ReservationContext>(options => options.UseSqlite(connectionString));
+
 
             services.AddRazorPages();
         }
@@ -147,15 +99,15 @@ namespace SiteJu
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
             });
         }
     }
