@@ -12,7 +12,7 @@ using SiteJu.Data;
 namespace SiteJu.Controllers
 {
     [Route("/admin")]
-    [Authorize]
+    //[Authorize]
     public class AdminController : Controller
     {
         [HttpGet("")]
@@ -31,8 +31,22 @@ namespace SiteJu.Controllers
         public IActionResult GetRDV([FromQuery(Name = "start")] DateTime start, [FromQuery(Name = "end")] DateTime end, [FromServices] ReservationContext context)
         {
             var filteredRendezVous = context.RDVS.Include(rdv => rdv.Client).Where(rdv => start  <= rdv.At && rdv.At <= end);
-            return Json(filteredRendezVous);
+            var result = filteredRendezVous.Select(rdv => new
+            {
+                start = rdv.At,
+                end = rdv.At + rdv.Prestation.Duration,
+                title = rdv.Client.Firstname,
+
+            });
+            return Json(result);
         }
+
+        //[HttpPost("Create")]
+        //public IActionResult CreateRDV()
+        //{
+
+        //}
+
     }
 }
 

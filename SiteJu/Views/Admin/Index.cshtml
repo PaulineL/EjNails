@@ -1,4 +1,6 @@
-﻿<div id='calendar'></div>
+﻿<button>Ajouter un RDV</button>
+<div id='calendar'></div>
+
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -11,15 +13,7 @@
             weekends: false,
             aspectRatio: 1.5,
             eventSources: [{
-                url: '/admin/rdv',
-                eventDataTransform: ev => {
-                    let at = new Date(ev.at);
-                    return {
-                        start: at,
-                        end: at.setHours(at.getHours() + 1),
-                        title: ev.client.lastname + " " + ev.client.firstname
-                    }
-                }
+                url: '/admin/rdv'
             }],
             headerToolbar: {
                 start: 'prev, next today',

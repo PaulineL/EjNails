@@ -25,13 +25,15 @@ namespace SiteJu.Data
                 {
                     ID = 1,
                     Prestations = "Ongles de pouff",
-                    Price = 10
+                    Price = 10,
+                    Duration = TimeSpan.FromHours(1)
                 },
                 new Prestation
                 {
                     ID = 2,
                     Prestations = "Ongles de luxe",
-                    Price = 100
+                    Price = 100,
+                    Duration = TimeSpan.FromHours(2)
                 }
             };
 
@@ -42,7 +44,7 @@ namespace SiteJu.Data
                     Id = 1,
                     ClientId = 1,
                     PrestationId = 1,
-                    At = DateTime.Now.AddDays(1)
+                    At = DateTime.Now.AddDays(4)
                 },
                 new RDV
                 {
@@ -50,7 +52,14 @@ namespace SiteJu.Data
                     ClientId = 2,
                     PrestationId = 2,
                     At = DateTime.Now.AddDays(2).AddHours(-4)
-                }
+                },
+                new RDV
+                {
+                    Id = 3,
+                    ClientId = 2,
+                    PrestationId = 2,
+                    At = DateTime.Now.AddHours(1)
+                },
             };
 
             context.Clients.AddRange(clients);

@@ -602,3 +602,6 @@ app.db-*
 app.db
 *.db
 SiteJu/app.db
+SiteJu/app.db-wal
+SiteJu/app.db
+SiteJu/app.db-wal
