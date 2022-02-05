@@ -23,12 +23,12 @@ namespace Infrastructure.Mail
                 _mailOptions.Value.MSGraph.ClientSecret);
         }
 
-        public async Task<bool> SendMail(string recipient, string senderDisplayName, string content)
+        public async Task<bool> SendMail(string recipient, string senderDisplayName, string content, string subject)
         {
             var sender = new GraphServiceClient(_clientSecretCredential).Users[_mailOptions.Value.MSGraph.UserSenderId];
             var sendResult = await sender.SendMail(new Message
             {
-                Subject = $"[Web] Prise de contact : {senderDisplayName}",
+                Subject = subject,
                 Body = new ItemBody() { Content = $"<p>{content}</p>", ContentType = BodyType.Html },
                 ToRecipients = new List<Recipient> { new Recipient { EmailAddress = new EmailAddress { Address = _mailOptions.Value.Contact } } },
                 ReplyTo = new List<Recipient> { new Recipient { EmailAddress = new EmailAddress { Address = recipient, Name = senderDisplayName } } }

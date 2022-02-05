@@ -18,6 +18,8 @@ using SiteJu.Data;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SiteJu.Helpers;
 
 namespace SiteJu
 {
@@ -77,6 +79,7 @@ namespace SiteJu
             {
                 services.AddSingleton<IMailSender, MailSenderDefault>();
             }
+            services.AddTransient<IEmailSender, IdentityMailSender>();
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 

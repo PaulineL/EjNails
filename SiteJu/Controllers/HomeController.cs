@@ -29,7 +29,7 @@ namespace SiteJu.Controllers
         [HttpPost("Contact")]
         public async Task<IActionResult> Contact(HomeViewModel vm, [FromServices] IMailSender _mailSender)
         {
-            bool result = await _mailSender.SendMail(vm.Contact.Email, $"{vm.Contact.LastName} {vm.Contact.Name}", vm.Contact.Message);
+            bool result = await _mailSender.SendMail(vm.Contact.Email, $"{vm.Contact.LastName} {vm.Contact.Name}", vm.Contact.Message, $"[Web] Prise de contact : {vm.Contact.LastName} {vm.Contact.Name}");
 
             if (result)
             {
