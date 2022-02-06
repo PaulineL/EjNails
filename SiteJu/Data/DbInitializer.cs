@@ -100,28 +100,28 @@ namespace SiteJu.Data
                 {
                     ID = 8,
                     Name = "Pose XL",
-                    Duration = TimeSpan.Zero,
+                    AdditionalTime = TimeSpan.Zero,
                     CompatibleWith = new List<Prestation>() { prestations[1] },
                     Quantifiable = false,
-                    Price = 5
+                    AdditionalPrice = 5
                 },
                 new PrestationOption
                 {
                     ID = 9,
                     Name = "Nail Art",
-                    Duration = TimeSpan.FromMinutes(30),
+                    AdditionalTime = TimeSpan.FromMinutes(30),
                     CompatibleWith = new List<Prestation>() { prestations[1], prestations[0] },
                     Quantifiable = false,
-                    Price = 5
+                    AdditionalPrice = 5
                 },
                 new PrestationOption
                 {
                     ID = 10,
                     Name = "Réparation d'un ongle cassé",
-                    Duration = TimeSpan.FromMinutes(30),
+                    AdditionalTime = TimeSpan.FromMinutes(30),
                     CompatibleWith = new List<Prestation>() { prestations[1] },
                     Quantifiable = false,
-                    Price = 5,
+                    AdditionalPrice = 5,
                     MaxAvailable = 3
                 }
             };
@@ -154,7 +154,6 @@ namespace SiteJu.Data
             context.Clients.AddRange(clients);
             context.Prestations.AddRange(prestations);
             context.PrestationOptions.AddRange(prestationOptions);
-            //context.UpdateRange(prestationOptions);
             context.RDVS.AddRange(rdvs);
 
             context.SaveChanges();
