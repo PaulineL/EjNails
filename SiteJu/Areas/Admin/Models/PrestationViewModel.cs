@@ -16,7 +16,7 @@ namespace SiteJu.Areas.Admin.Models
         public int Price { get; set; }
         public bool IsSelected { get; set; }
 
-        public IEnumerable<PrestationOptionViewModel> Options { get; set; }
+        public List<PrestationOptionViewModel> Options { get; set; }
     }
 }
 
