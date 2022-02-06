@@ -3,7 +3,7 @@
 <div class="container">
     <h1>Créer un nouveau client</h1>
 
-    @using (Html.BeginForm("CreateClient", "Admin", FormMethod.Post))
+    @using (Html.BeginForm("CreateClient", "Home", new {area = "Admin"},  FormMethod.Post))
     {
         <div class="form-group">
             @Html.LabelFor(model => model.Firstname, new { @class = "form-label" })

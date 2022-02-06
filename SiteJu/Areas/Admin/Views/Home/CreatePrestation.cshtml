@@ -3,7 +3,7 @@
 <div class="container">
     <h1>Créer une prestation</h1>
 
-    @using (Html.BeginForm("CreatePrestation", "Admin", FormMethod.Post))
+    @using (Html.BeginForm("CreatePrestation", "Home",FormMethod.Post))
     {
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "form-label" })

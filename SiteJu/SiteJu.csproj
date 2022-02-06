@@ -57,6 +57,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Admin\" />
+    <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
 </Project>

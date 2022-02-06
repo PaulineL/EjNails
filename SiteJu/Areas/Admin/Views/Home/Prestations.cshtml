@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SiteJu.Data.Prestation>
+﻿@model IEnumerable<PrestationViewModel>
 
 <div class="container">
 
@@ -20,10 +20,10 @@
                     <td>@presta.Name</td>
                     <td>@presta.Duration</td>
                     <td>@presta.Price €</td>
-                    <td><a asp-action="EditPrestation" asp-route-id="@presta.ID"><button class="btn btn-success">Modifier</button></a></td>
+                    <td><a asp-action="EditPrestation" asp-route-id="@presta.Id"><button class="btn btn-success">Modifier</button></a></td>
                     <td>
                         <form method = "post" asp-action="DeletePrestation">
-                            @Html.Hidden("id", presta.ID)
+                            @Html.Hidden("id", presta.Id)
                             <button class="btn btn-danger" type="submit">Supprimer</button>
                         </form>
                     </td>

@@ -1,23 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using SiteJu.Areas.Admin.Models;
 using SiteJu.Data;
 using SiteJu.Models;
+using System;
+using System.Linq;
 
-namespace SiteJu.Controllers
+namespace SiteJu.Areas.Admin.Controllers
 {
-    [Route("/admin")]
     [Authorize("Admin")]
-    public class AdminController : Controller
+    [Route("/[area]")]
+    [Area("Admin")]
+    public class HomeController : Controller
     {
         private readonly ReservationContext _context;
 
-        public AdminController(ReservationContext context)
+        public HomeController(ReservationContext context)
         {
             _context = context;
         }
@@ -31,8 +30,26 @@ namespace SiteJu.Controllers
         [HttpGet("Prestations")]
         public IActionResult Prestations()
         {
-            var prestations = _context.Prestations.ToList();
-            return View(prestations);          
+            var prestations = _context.Prestations.Select(p => new PrestationViewModel
+            {
+                Id = p.ID,
+                Duration = Convert.ToInt32(p.Duration.TotalMinutes),
+                IsSelected = false,
+                Name = p.Name,
+                Price = p.Price,
+                Options = p.OptionsAvailable.Select(po => new PrestationOptionViewModel
+                {
+                    Id = po.ID,
+                    Duration = Convert.ToInt32(po.AdditionalTime.TotalMinutes),
+                    IsSelected = false,
+                    MaxQuantity = po.MaxAvailable,
+                    Name = po.Name,
+                    Price = po.AdditionalPrice,
+                    Quantity = 0
+                })
+
+            });
+            return View(prestations);
         }
 
         [HttpGet("CreatePrestation")]
@@ -66,7 +83,7 @@ namespace SiteJu.Controllers
 
 
         [HttpGet("EditPrestation")]
-        public IActionResult EditPrestation([FromQuery]int id)
+        public IActionResult EditPrestation([FromQuery] int id)
         {
             var prestation = _context.Prestations.Find(id);
             var prestVm = new PrestationViewModel
@@ -109,7 +126,14 @@ namespace SiteJu.Controllers
         [HttpGet("Clients")]
         public IActionResult Clients()
         {
-            var clients = _context.Clients.ToList();
+            var clients = _context.Clients.Select(client => new ClientViewModel
+            {
+                Email = client.Email,
+                Firstname = client.Firstname,
+                ID = client.ID,
+                Lastname = client.Lastname,
+                Telephone = client.Telephone,
+            });
             return View(clients);
         }
         [HttpGet("CreateClient")]
@@ -206,7 +230,7 @@ namespace SiteJu.Controllers
         [HttpGet("CreateRDV")]
         public IActionResult CreateRDV()
         {
-            var prestations = _context.Prestations.Include().ToList();
+            var prestations = _context.Prestations.ToList();
 
             var res = new RDVViewModel();
             // Transforme les prestations de la BDD en PrestationViewModel
@@ -220,4 +244,3 @@ namespace SiteJu.Controllers
         }
     }
 }
-

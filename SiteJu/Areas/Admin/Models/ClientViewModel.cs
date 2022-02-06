@@ -1,9 +1,8 @@
-﻿
-using System;
+﻿using System;
 using System.ComponentModel;
 
 
-namespace SiteJu.Models
+namespace SiteJu.Areas.Admin.Models
 {
     public class ClientViewModel
     {

@@ -1,10 +1,9 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
 
-namespace SiteJu.Models
+namespace SiteJu.Areas.Admin.Models
 {
     public class RDVViewModel
     {

@@ -3,7 +3,7 @@
 <div class="container">
     <h1>Créer un rendez-vous</h1>
 
-    @using (Html.BeginForm("CreateRDV", "Admin", FormMethod.Post))
+    @using (Html.BeginForm("CreateRDV", "Home", FormMethod.Post))
     {
         <div class="form-group">
             @Html.LabelFor(model => model.At, new { @class = "form-label" })
@@ -22,7 +22,7 @@
             {
         <div>   
                 @Html.DisplayFor(m => m.Prestation[i].Name)
-                @Html.CheckBoxFor(m => m.Prestation[i].isSelected)
+                @Html.CheckBoxFor(m => m.Prestation[i].IsSelected)
         </div>
 
             }

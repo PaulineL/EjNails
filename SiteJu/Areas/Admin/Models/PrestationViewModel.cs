@@ -1,13 +1,12 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 
 
-namespace SiteJu.Models
+namespace SiteJu.Areas.Admin.Models
 {
-	public class PrestationViewModel
-	{
+    public class PrestationViewModel
+    {
         public int Id { get; set; }
         [DisplayName("Nom")]
         public string Name { get; set; }
@@ -15,9 +14,9 @@ namespace SiteJu.Models
         public int Duration { get; set; }
         [DisplayName("Prix")]
         public int Price { get; set; }
-        public bool isSelected { get; set; }
+        public bool IsSelected { get; set; }
 
-        public List<PrestationOptionViewModel> Options { get; set; }
+        public IEnumerable<PrestationOptionViewModel> Options { get; set; }
     }
 }
 
