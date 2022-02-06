@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,13 +34,17 @@
     @{ IgnoreSection("Scripts"); }
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
-            <div class="menu_left">
-                <a class="nav-link text-dark" asp-action="">Planning</a>
-                <a class="nav-link text-dark" asp-action="Prestations">Prestations</a>
-                <a class="nav-link text-dark" asp-action="Clients">Clients</a>
-                <a class="nav-link text-dark" asp-action="CreateRDV">Créer un rendez-vous</a>
-            </div>
-            <partial name="_LoginPartial" />
+            @*Si l'user est connecter alors afficher ces liens'*@
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div class="menu_left">
+                    <a class="nav-link text-dark" asp-action="">Planning</a>
+                    <a class="nav-link text-dark" asp-action="Prestations">Prestations</a>
+                    <a class="nav-link text-dark" asp-action="Clients">Clients</a>
+                    <a class="nav-link text-dark" asp-action="CreateRDV">Créer un rendez-vous</a>
+                </div>
+                <partial name="_LoginPartial" />
+            }
         </nav>
     </header>
     <main role="main" class="pb-3">
