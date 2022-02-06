@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 
@@ -15,6 +16,8 @@ namespace SiteJu.Models
         [DisplayName("Prix")]
         public int Price { get; set; }
         public bool isSelected { get; set; }
+
+        public List<PrestationOptionViewModel> Options { get; set; }
     }
 }
 

@@ -206,7 +206,7 @@ namespace SiteJu.Controllers
         [HttpGet("CreateRDV")]
         public IActionResult CreateRDV()
         {
-            var prestations = _context.Prestations.ToList();
+            var prestations = _context.Prestations.Include().ToList();
 
             var res = new RDVViewModel();
             // Transforme les prestations de la BDD en PrestationViewModel
