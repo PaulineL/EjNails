@@ -11,8 +11,8 @@ namespace SiteJu.Data
         public int ClientId { get; set; }
 
         public Client Client { get; set; }
-        public IEnumerable<Prestation> Prestations { get; set; }
 
+        public IEnumerable<Prestation> Prestations { get; set; }
         public IEnumerable<PrestationOption> Options { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace SiteJu.Data
@@ -10,6 +11,9 @@ namespace SiteJu.Data
         public int Price { get; set; }
         public TimeSpan Duration { get; set; }
         public PrestationCategory Category { get; set; }
+
+        public IEnumerable<RDV> RDVS { get; set; }
+        public IEnumerable<PrestationOption> OptionsAvailable { get; set; }
     }
 }
 

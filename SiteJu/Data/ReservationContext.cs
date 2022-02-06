@@ -19,9 +19,27 @@ namespace SiteJu.Data
         public DbSet<Prestation> Prestations { get; set; }
         public DbSet<PrestationOption> PrestationOptions { get; set; }
 
-
+        // converti model C# en model BDD
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<RDV>()
+                .HasMany(p => p.Prestations)
+                .WithMany(r => r.RDVS)
+                .UsingEntity(rp => rp.ToTable("RDVPrestations"));
+
+            modelBuilder.Entity<PrestationOption>()
+                .HasMany(p => p.CompatibleWith)
+                .WithMany(po => po.OptionsAvailable)
+                .UsingEntity(rp => rp.ToTable("PrestationOptionLink"));
+
+            modelBuilder.Entity<PrestationOption>()
+                .HasMany(r => r.RDVS)
+                .WithMany(po => po.Options)
+                .UsingEntity(rp => rp.ToTable("RDVPrestationsOptions"));
+
+
+            modelBuilder.Entity<Prestation>().ToTable("Prestations");
+            modelBuilder.Entity<PrestationOption>().ToTable("PrestationsOptions");
         }
 
     }
