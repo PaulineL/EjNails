@@ -285,14 +285,16 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpGet("CreateRDV")]
         public IActionResult CreateRDV()
         {
-            var prestations = _context.Prestations.ToList();
+            var prestations = _context.Prestations.Include(p => p.Category).ToList();
 
             var res = new RDVViewModel();
             // Transforme les prestations de la BDD en PrestationViewModel
             res.Prestation = prestations.Select(prest => new PrestationViewModel
             {
                 Id = prest.ID,
-                Name = prest.Name
+                Name = prest.Name,
+                Category = new PrestationCategoryViewModel { Id = prest.Category.Id, Name = prest.Category.Name }
+
             }).ToList();
 
             return View(res);

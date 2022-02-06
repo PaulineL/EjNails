@@ -16,7 +16,15 @@ namespace SiteJu.Areas.Admin.Models
         public int Price { get; set; }
         public bool IsSelected { get; set; }
 
+        public PrestationCategoryViewModel Category { get; set; }
+
         public List<PrestationOptionViewModel> Options { get; set; }
+    }
+
+    public class PrestationCategoryViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
     }
 }
 

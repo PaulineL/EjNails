@@ -2,62 +2,119 @@
 
 <div class="container">
     <h1>Créer un rendez-vous</h1>
-
-    @using (Html.BeginForm("CreateRDV", "Home", FormMethod.Post))
-    {
-        <div class="form-group">
-            @Html.LabelFor(model => model.At, new { @class = "form-label" })
-
-            @Html.HiddenFor(model => model.At)
-            <input class="form-control" type="datetime-local" id="meeting-time"
-                   name="meeting-time" value="2022-02-05T08:00"
-                   min="2022-02-05T08:00">
-        </div>
-        <div class="form-group">
-            @Html.HiddenFor(m => m.ClientId)
-
-            <input type="text" class="form-control" id="search-client" placeholder="Rechercher un client" />
-
-            <select id="search-client-result" class="form-select" multiple aria-label="multiple select example">
-            </select>
-        </div>
-        <div class="form-group">
-            <label>Prestations</label>
-            @for (int i = 0; i < Model.Prestation.Count; i++)
+    <div class="row">
+        <div class="col-8">
+            @using (Html.BeginForm("CreateRDV", "Home", FormMethod.Post))
             {
-                <div>
-                    @Html.DisplayFor(m => m.Prestation[i].Name)
-                    @Html.CheckBoxFor(m => m.Prestation[i].IsSelected)
+                <div class="form-group">
+                    <h2>Temporalité</h2>
+                    @Html.LabelFor(model => model.At, new { @class = "form-label" })
+
+                    @Html.HiddenFor(model => model.At)
+                    <input class="form-control" type="datetime-local" id="meeting-time" name="meeting-time" value="2022-02-05T08:00" min="2022-02-05T08:00">
                 </div>
+                <div class="form-group">
+                    <h2>Client</h2>
+                    @Html.HiddenFor(m => m.ClientId)
+
+                    @Html.LabelFor(model => model.Client.Firstname, new { @class = "form-label" })
+                    <input type="text" class="form-control" id="search-client" placeholder="Rechercher un client" />
+
+                    <select id="search-client-result" class="form-select" multiple aria-label="multiple select example">
+                    </select>
+                </div>
+                <div class="form-group">
+                    <h2>Prestations</h2>
+                    @{
+                        var i = 0;
+                    }
+                    @foreach (var groupPresta in Model.Prestation.GroupBy(p => p.Category.Id))
+                    {
+                        <h3>@groupPresta.First().Category.Name</h3>
+                        @foreach (var presta in groupPresta)
+                        {
+                            <div>
+                                @Html.CheckBoxFor(m => presta.IsSelected)
+                                @Html.DisplayFor(m => presta.Name)
+                                @Html.HiddenFor(m => presta.Id)
+                            </div>
+                            i++;
+                        }
+                    }
+                </div>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
             }
         </div>
-        <button type="submit" class="btn btn-primary">Envoyer</button>
-    }
+        <div class="col-4">
+            <div id='calendar' style="height:100%"></div>
+            <script>
+                let calendar = null
+                document.getElementById("meeting-time").onchange = ev => {
+                    calendar.changeView('timeGridDay', ev.target.valueAsDate);
+                    //calendar.gotoDate(ev.target.valueAsDate);
+                    console.log(ev)
+                };
+                document.addEventListener('DOMContentLoaded', () => {
+                    var calendarEl = document.getElementById('calendar');
+                    var now = new Date();
+                    var startDay =  new Date();
+                    startDay.setHours(0, 0, 0);
+                    var endDay = new Date()
+                    endDay.setHours(23, 0, 0);
+
+                    calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'timeGrid',
+                        height: "100%",
+                        locale: 'fr',
+                        allDaySlot: false,
+                        slotMinTime: '08:00:00',
+                        slotMaxTime: '20:00:00',
+                        visibleRange: {
+                            start: startDay,
+                            end: endDay
+                        },
+                        weekends: true,
+                        aspectRatio: 1.5,
+                        eventSources: [{
+                            url: '/admin/rdv'
+                        }],
+                        headerToolbar: {
+                            start: '',
+                            center: 'title',
+                            end: ''
+                        }
+                    });
+                    calendar.render();
+                });
+            </script>
+        </div>
+    </div>
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
-<script>$(function () {
-        const clientSearchInput = document.getElementById('search-client');
+<script>
+    $(function () {
+            const clientSearchInput = document.getElementById('search-client');
 
-        clientSearchInput.addEventListener('keyup', searchClient);
+            clientSearchInput.addEventListener('keyup', searchClient);
 
-        function searchClient(e) {
-            let searchValue = clientSearchInput.value;
+            function searchClient(e) {
+                let searchValue = clientSearchInput.value;
 
-            fetch("SearchClient?lastname=" + searchValue).then(async response => {
+                fetch("SearchClient?lastname=" + searchValue).then(async response => {
 
-                // vide la liste 
-                document.getElementById("search-client-result").innerText = "";
-                let clients = await response.json()
+                    // vide la liste
+                    document.getElementById("search-client-result").innerText = "";
+                    let clients = await response.json()
 
-                clients.forEach(client => {
-                    let option = document.createElement("option");
-                    option.value = client.id
-                    option.innerText = client.firstname + " " + client.lastname
-                    document.getElementById("search-client-result").appendChild(option);
-                });
-                
+                    clients.forEach(client => {
+                        let option = document.createElement("option");
+                        option.value = client.id
+                        option.innerText = client.firstname + " " + client.lastname
+                        document.getElementById("search-client-result").appendChild(option);
+                    });
 
-            })
-        }
-    })</script>
+
+                })
+            }
+        })</script>
