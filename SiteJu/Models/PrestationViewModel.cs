@@ -14,6 +14,7 @@ namespace SiteJu.Models
         public int Duration { get; set; }
         [DisplayName("Prix")]
         public int Price { get; set; }
+        public bool isSelected { get; set; }
     }
 }
 

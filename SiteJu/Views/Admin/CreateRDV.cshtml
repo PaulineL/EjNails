@@ -1,0 +1,33 @@
+﻿
+@model RDVViewModel
+
+<div class="container">
+    <h1>Créer un rendez-vous</h1>
+
+    @using (Html.BeginForm("CreateRDV", "Admin", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.At, new { @class = "form-label" })
+
+            @Html.HiddenFor(model => model.At, new { @class = "form-label" })
+            <input type="datetime-local" id="meeting-time"
+                   name="meeting-time" value="2022-02-05T08:00"
+                   min="2022-02-05T08:00">
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClientId, new { @class = "form-label" })
+        </div>
+        <div class="form-group">
+            <label>Prestations</label>
+            @for (int i = 0; i < Model.Prestation.Count; i++)
+            {
+        <div>   
+                @Html.DisplayFor(m => m.Prestation[i].Name)
+                @Html.CheckBoxFor(m => m.Prestation[i].isSelected)
+        </div>
+
+            }
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    }
+</div>

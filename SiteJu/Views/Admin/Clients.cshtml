@@ -1,0 +1,37 @@
+﻿@model IEnumerable<SiteJu.Data.Client>
+
+<div class="container">
+
+    <h1>Mes clients</h1>
+
+    <a asp-action="CreateClient"><button class="btn btn-primary">Ajouter un nouveau client</button></a>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Prénom</th>
+                <th scope="col">Téléphone</th>
+                <th scope="col">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in Model)
+            {
+                <tr>
+                    <td>@client.Firstname</td>
+                    <td>@client.Lastname</td>
+                    <td>@client.Telephone</td>
+                    <td>@client.Email</td>
+                    <td><a asp-action="EditClient" asp-route-id="@client.ID"><button class="btn btn-success">Modifier</button></a></td>
+                    <td>
+                        <form method="post" asp-action="DeleteClient">
+                            @Html.Hidden("id", client.ID)
+                            <button class="btn btn-danger" type="submit">Supprimer</button>
+                        </form>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,27 @@
+﻿@model ClientViewModel
+
+<div class="container">
+    <h1>Modifier un client</h1>
+
+    @using (Html.BeginForm("EditClient", "Admin", FormMethod.Post))
+    {
+    @Html.HiddenFor(m => m.ID)
+    <div class="form-group">
+        @Html.LabelFor(model => model.Firstname, new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.Firstname, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Lastname, new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.Lastname, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Telephone, new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.Telephone, new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Envoyer</button>
+}
+</div>

@@ -2,9 +2,9 @@
 
 <div class="container">
 
-    <h1>Bienvenue sur vos prestations</h1>
+    <h1>Mes prestations</h1>
 
-    <button class="btn btn-primary" asp-action="CreatePrestation">Ajouter une prestation</button>
+    <a asp-action="CreatePrestation"><button class="btn btn-primary">Ajouter une prestation</button></a>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -20,7 +20,7 @@
                     <td>@presta.Prestations</td>
                     <td>@presta.Duration</td>
                     <td>@presta.Price €</td>
-                    <td><button class="btn btn-success" asp-action="EditPrestation" asp-route-id="@presta.ID">Edit</button></td>
+                    <td><a asp-action="EditPrestation" asp-route-id="@presta.ID"><button class="btn btn-success">Modifier</button></a></td>
                     <td>
                         <form method = "post" asp-action="DeletePrestation">
                             @Html.Hidden("id", presta.ID)
