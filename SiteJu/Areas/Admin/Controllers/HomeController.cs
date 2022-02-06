@@ -227,6 +227,26 @@ namespace SiteJu.Areas.Admin.Controllers
             }));
         }
 
+        [HttpGet("SearchClient")]
+        public IActionResult SearchClient([FromQuery(Name ="lastname")] string lastname)
+        {
+            if (lastname == null)
+            {
+                lastname = String.Empty;
+            }
+            var filter = lastname.ToUpperInvariant();
+            var filteredClient = _context.Clients.Where(client => EF.Functions.Like(client.Lastname, $"%{filter}%"));
+            var clients = filteredClient.Select(client => new ClientViewModel
+            {
+                ID = client.ID,
+                Lastname = client.Lastname,
+                Firstname = client.Firstname
+            }).Take(50);
+
+            return Json(clients);
+        }
+
+
         [HttpGet("CreateRDV")]
         public IActionResult CreateRDV()
         {

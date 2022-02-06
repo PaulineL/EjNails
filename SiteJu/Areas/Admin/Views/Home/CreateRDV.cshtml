@@ -8,25 +8,56 @@
         <div class="form-group">
             @Html.LabelFor(model => model.At, new { @class = "form-label" })
 
-            @Html.HiddenFor(model => model.At, new { @class = "form-label" })
-            <input type="datetime-local" id="meeting-time"
+            @Html.HiddenFor(model => model.At)
+            <input class="form-control" type="datetime-local" id="meeting-time"
                    name="meeting-time" value="2022-02-05T08:00"
                    min="2022-02-05T08:00">
         </div>
         <div class="form-group">
-            @Html.LabelFor(model => model.ClientId, new { @class = "form-label" })
+            @Html.HiddenFor(m => m.ClientId)
+
+            <input type="text" class="form-control" id="search-client" placeholder="Rechercher un client" />
+
+            <select id="search-client-result" class="form-select" multiple aria-label="multiple select example">
+            </select>
         </div>
         <div class="form-group">
             <label>Prestations</label>
             @for (int i = 0; i < Model.Prestation.Count; i++)
             {
-        <div>   
-                @Html.DisplayFor(m => m.Prestation[i].Name)
-                @Html.CheckBoxFor(m => m.Prestation[i].IsSelected)
-        </div>
-
+                <div>
+                    @Html.DisplayFor(m => m.Prestation[i].Name)
+                    @Html.CheckBoxFor(m => m.Prestation[i].IsSelected)
+                </div>
             }
         </div>
         <button type="submit" class="btn btn-primary">Envoyer</button>
     }
 </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script>$(function () {
+        const clientSearchInput = document.getElementById('search-client');
+
+        clientSearchInput.addEventListener('keyup', searchClient);
+
+        function searchClient(e) {
+            let searchValue = clientSearchInput.value;
+
+            fetch("SearchClient?lastname=" + searchValue).then(async response => {
+
+                // vide la liste 
+                document.getElementById("search-client-result").innerText = "";
+                let clients = await response.json()
+
+                clients.forEach(client => {
+                    let option = document.createElement("option");
+                    option.value = client.id
+                    option.innerText = client.firstname + " " + client.lastname
+                    document.getElementById("search-client-result").appendChild(option);
+                });
+                
+
+            })
+        }
+    })</script>
