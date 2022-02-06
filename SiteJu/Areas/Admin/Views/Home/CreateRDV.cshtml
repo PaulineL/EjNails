@@ -11,7 +11,8 @@
                     @Html.LabelFor(model => model.At, new { @class = "form-label" })
 
                     @Html.HiddenFor(model => model.At)
-                    <input class="form-control" type="datetime-local" id="meeting-time" name="meeting-time" value="2022-02-05T08:00" min="2022-02-05T08:00">
+                    <input class="form-control" type="datetime-local" id="meeting-time" name="meeting-time" value="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")"
+                            min="@DateTime.Now.ToString("yyyy-MM-ddTHH:mm")">
                 </div>
                 <div class="form-group">
                     <h2>Client</h2>
@@ -51,12 +52,9 @@
                 let calendar = null
                 document.getElementById("meeting-time").onchange = ev => {
                     calendar.changeView('timeGridDay', ev.target.valueAsDate);
-                    //calendar.gotoDate(ev.target.valueAsDate);
-                    console.log(ev)
                 };
                 document.addEventListener('DOMContentLoaded', () => {
                     var calendarEl = document.getElementById('calendar');
-                    var now = new Date();
                     var startDay =  new Date();
                     startDay.setHours(0, 0, 0);
                     var endDay = new Date()
