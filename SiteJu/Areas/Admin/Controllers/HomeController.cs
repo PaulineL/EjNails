@@ -46,7 +46,7 @@ namespace SiteJu.Areas.Admin.Controllers
                     Name = po.Name,
                     Price = po.AdditionalPrice,
                     Quantity = 0
-                })
+                }).ToList()
 
             });
             return View(prestations);
@@ -55,17 +55,32 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpGet("CreatePrestation")]
         public IActionResult CreatePrestation()
         {
-            return View();
+            PrestationViewModel vm = new PrestationViewModel();
+            vm.Options = _context.PrestationOptions.Select(p => new PrestationOptionViewModel
+            {
+                Id=p.ID,
+                Duration = Convert.ToInt32(p.AdditionalTime.TotalMinutes),
+                IsSelected=false,
+                MaxQuantity= p.MaxAvailable, 
+                Name= p.Name,
+                Price = p.AdditionalPrice,
+                Quantity= 0
+            }).ToList();
+            return View(vm);
         }
 
         [HttpPost("CreatePrestation")]
         public IActionResult CreatePrestation(PrestationViewModel prestationVM)
         {
+            var selectedOptionIds = prestationVM.Options.Where(so => so.IsSelected).Select(so => so.Id).ToList();
+            var options = _context.PrestationOptions.Where(po => selectedOptionIds.Contains(po.ID));
+
             var prestation = new Prestation
             {
                 Name = prestationVM.Name,
                 Price = prestationVM.Price,
-                Duration = TimeSpan.FromMinutes(prestationVM.Duration)
+                Duration = TimeSpan.FromMinutes(prestationVM.Duration),
+                OptionsAvailable = options.ToList(),
             };
 
             _context.Prestations.Add(prestation);
@@ -85,13 +100,20 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpGet("EditPrestation")]
         public IActionResult EditPrestation([FromQuery] int id)
         {
-            var prestation = _context.Prestations.Find(id);
+            var prestation = _context.Prestations.Include(p => p.OptionsAvailable).FirstOrDefault(p => p.ID == id);
+            var allOptions = _context.PrestationOptions.ToList();
             var prestVm = new PrestationViewModel
             {
                 Id = prestation.ID,
                 Duration = Convert.ToInt32(prestation.Duration.TotalMinutes),
                 Name = prestation.Name,
-                Price = prestation.Price
+                Price = prestation.Price,
+                Options = allOptions.Select(po => new PrestationOptionViewModel
+                {
+                    Id = po.ID,
+                    Name = po.Name,
+                    IsSelected = prestation.OptionsAvailable.Any(p => p.ID == po.ID),
+                }).ToList(),
             };
             return View(prestVm);
         }
@@ -99,15 +121,28 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpPost("EditPrestation")]
         public IActionResult EditPrestation(PrestationViewModel prestationVM)
         {
-            var prestation = new Prestation
-            {
-                ID = prestationVM.Id,
-                Name = prestationVM.Name,
-                Price = prestationVM.Price,
-                Duration = TimeSpan.FromMinutes(prestationVM.Duration)
-            };
+            var selectedOptionIds = prestationVM.Options.Where(so => so.IsSelected).Select(so => so.Id).ToList();
+            var options = _context.PrestationOptions.Where(po => selectedOptionIds.Contains(po.ID)).ToList();
+            var presta = _context.Prestations.Include(p=> p.OptionsAvailable).FirstOrDefault(p => p.ID == prestationVM.Id);
 
-            _context.Prestations.Update(prestation);
+            presta.Name = prestationVM.Name;
+            presta.Price = prestationVM.Price;
+            presta.Duration = TimeSpan.FromMinutes(prestationVM.Duration);
+            foreach (var opt in prestationVM.Options)
+            {
+                //si l'option n'est pas sélectioné dans le formulaire mais est present dans la liste des options compatible, on la supprime
+                if (!opt.IsSelected && presta.OptionsAvailable.Any(oa => oa.ID == opt.Id))
+                {
+                    presta.OptionsAvailable.Remove(presta.OptionsAvailable.First(oa => oa.ID == opt.Id));
+                }
+                //sinon si l'option est sélectioné dans le formulaire mais n'est pas present dans la liste des options compatible, on l'ajoute
+                else if (opt.IsSelected && !presta.OptionsAvailable.Any(oa => oa.ID == opt.Id))
+                {
+                    presta.OptionsAvailable.Add(options.First(o => o.ID == opt.Id));
+                }
+            }
+
+            _context.Prestations.Update(presta);
             _context.SaveChanges();
 
             return Redirect("Prestations");

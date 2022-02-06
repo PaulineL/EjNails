@@ -12,8 +12,8 @@ namespace SiteJu.Data
         public TimeSpan Duration { get; set; }
         public PrestationCategory Category { get; set; }
 
-        public IEnumerable<RDV> RDVS { get; set; }
-        public IEnumerable<PrestationOption> OptionsAvailable { get; set; }
+        public ICollection<RDV> RDVS { get; set; }
+        public ICollection<PrestationOption> OptionsAvailable { get; set; }
     }
 }
 
