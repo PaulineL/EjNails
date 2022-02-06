@@ -17,6 +17,7 @@ namespace SiteJu.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<RDV> RDVS { get; set; }
         public DbSet<Prestation> Prestations { get; set; }
+        public DbSet<PrestationOption> PrestationOptions { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

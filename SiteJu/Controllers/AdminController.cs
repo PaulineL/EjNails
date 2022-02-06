@@ -15,16 +15,23 @@ namespace SiteJu.Controllers
     [Authorize("Admin")]
     public class AdminController : Controller
     {
+        private readonly ReservationContext _context;
+
+        public AdminController(ReservationContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet("")]
-        public IActionResult Index([FromServices] SignInManager<IdentityUser> SignInManager, [FromServices] UserManager<IdentityUser> UserManager)
+        public IActionResult Index()
         {
             return View();
         }
 
         [HttpGet("Prestations")]
-        public IActionResult Prestations([FromServices] ReservationContext context)
+        public IActionResult Prestations()
         {
-            var prestations = context.Prestations.ToList();
+            var prestations = _context.Prestations.ToList();
             return View(prestations);          
         }
 
@@ -35,17 +42,17 @@ namespace SiteJu.Controllers
         }
 
         [HttpPost("CreatePrestation")]
-        public IActionResult CreatePrestation(PrestationViewModel prestationVM, [FromServices] ReservationContext context)
+        public IActionResult CreatePrestation(PrestationViewModel prestationVM)
         {
             var prestation = new Prestation
             {
-                Prestations = prestationVM.Name,
+                Name = prestationVM.Name,
                 Price = prestationVM.Price,
                 Duration = TimeSpan.FromMinutes(prestationVM.Duration)
             };
 
-            context.Prestations.Add(prestation);
-            context.SaveChanges();
+            _context.Prestations.Add(prestation);
+            _context.SaveChanges();
             if (prestation.ID != 0)
             {
                 return Redirect("Prestations");
@@ -59,50 +66,50 @@ namespace SiteJu.Controllers
 
 
         [HttpGet("EditPrestation")]
-        public IActionResult EditPrestation([FromQuery]int id, [FromServices] ReservationContext context)
+        public IActionResult EditPrestation([FromQuery]int id)
         {
-            var prestation = context.Prestations.Find(id);
+            var prestation = _context.Prestations.Find(id);
             var prestVm = new PrestationViewModel
             {
                 Id = prestation.ID,
                 Duration = Convert.ToInt32(prestation.Duration.TotalMinutes),
-                Name = prestation.Prestations,
+                Name = prestation.Name,
                 Price = prestation.Price
             };
             return View(prestVm);
         }
 
         [HttpPost("EditPrestation")]
-        public IActionResult EditPrestation(PrestationViewModel prestationVM, [FromServices] ReservationContext context)
+        public IActionResult EditPrestation(PrestationViewModel prestationVM)
         {
             var prestation = new Prestation
             {
                 ID = prestationVM.Id,
-                Prestations = prestationVM.Name,
+                Name = prestationVM.Name,
                 Price = prestationVM.Price,
                 Duration = TimeSpan.FromMinutes(prestationVM.Duration)
             };
 
-            context.Prestations.Update(prestation);
-            context.SaveChanges();
+            _context.Prestations.Update(prestation);
+            _context.SaveChanges();
 
             return Redirect("Prestations");
         }
 
         [HttpPost("DeletePrestation")]
-        public IActionResult DeletePrestation(int id, [FromServices] ReservationContext context)
+        public IActionResult DeletePrestation(int id)
         {
-            context.Prestations.Remove(new Prestation { ID = id });
-            context.SaveChanges();
+            _context.Prestations.Remove(new Prestation { ID = id });
+            _context.SaveChanges();
 
             return Redirect("Prestations");
 
         }
 
         [HttpGet("Clients")]
-        public IActionResult Clients([FromServices] ReservationContext context)
+        public IActionResult Clients()
         {
-            var clients = context.Clients.ToList();
+            var clients = _context.Clients.ToList();
             return View(clients);
         }
         [HttpGet("CreateClient")]
@@ -112,7 +119,7 @@ namespace SiteJu.Controllers
         }
 
         [HttpPost("CreateClient")]
-        public IActionResult CreateClient(ClientViewModel clientVM, [FromServices] ReservationContext context)
+        public IActionResult CreateClient(ClientViewModel clientVM)
         {
             var client = new Client
             {
@@ -122,8 +129,8 @@ namespace SiteJu.Controllers
                 Email = clientVM.Email,
             };
 
-            context.Clients.Add(client);
-            context.SaveChanges();
+            _context.Clients.Add(client);
+            _context.SaveChanges();
             if (client.ID != 0)
             {
                 return Redirect("Clients");
@@ -135,9 +142,9 @@ namespace SiteJu.Controllers
         }
 
         [HttpGet("EditClient")]
-        public IActionResult EditClient([FromQuery] int id, [FromServices] ReservationContext context)
+        public IActionResult EditClient([FromQuery] int id)
         {
-            var client = context.Clients.Find(id);
+            var client = _context.Clients.Find(id);
             var clientVm = new ClientViewModel
             {
                 ID = client.ID,
@@ -150,7 +157,7 @@ namespace SiteJu.Controllers
         }
 
         [HttpPost("EditClient")]
-        public IActionResult EditClient(ClientViewModel clientVM, [FromServices] ReservationContext context)
+        public IActionResult EditClient(ClientViewModel clientVM)
         {
             var client = new Client
             {
@@ -161,56 +168,56 @@ namespace SiteJu.Controllers
                 Email = clientVM.Email,
             };
 
-            context.Clients.Update(client);
-            context.SaveChanges();
+            _context.Clients.Update(client);
+            _context.SaveChanges();
 
             return Redirect("Clients");
         }
+
         [HttpPost("DeleteClient")]
-        public IActionResult DeleteClient(int id, [FromServices] ReservationContext context)
+        public IActionResult DeleteClient(int id)
         {
-            context.Clients.Remove(new Client { ID = id });
-            context.SaveChanges();
+            _context.Clients.Remove(new Client { ID = id });
+            _context.SaveChanges();
 
             return Redirect("Clients");
 
         }
 
         [HttpGet("RDV")]
-        public IActionResult GetRDV([FromQuery(Name = "start")] DateTime start, [FromQuery(Name = "end")] DateTime end, [FromServices] ReservationContext context)
+        public IActionResult GetRDV([FromQuery(Name = "start")] DateTime start, [FromQuery(Name = "end")] DateTime end)
         {
-            var filteredRendezVous = context.RDVS.Include(rdv => rdv.Client).Where(rdv => start <= rdv.At && rdv.At <= end);
+            var filteredRendezVous = _context.RDVS.Include(rdv => rdv.Client).Where(rdv => start <= rdv.At && rdv.At <= end);
             var result = filteredRendezVous.Select(rdv => new
             {
                 start = rdv.At,
-                end = rdv.At + rdv.Prestation.Duration,
-                title = rdv.Client.Firstname,
+                duration = rdv.Prestations.Select(presta => presta.Duration),
+                title = rdv.Client.Firstname + " " + rdv.Client.Lastname,
+            }).ToList();
 
-            });
-
-            return Json(result);
+            return Json(result.Select(rdv => new
+            {
+                start = rdv.start,
+                end = rdv.start + new TimeSpan(rdv.duration.Sum(p => p.Ticks)),
+                title = rdv.title
+            }));
         }
+
         [HttpGet("CreateRDV")]
-        public IActionResult CreateRDV([FromServices] ReservationContext context)
+        public IActionResult CreateRDV()
         {
-            var prestations = context.Prestations.ToList();
+            var prestations = _context.Prestations.ToList();
 
             var res = new RDVViewModel();
             // Transforme les prestations de la BDD en PrestationViewModel
             res.Prestation = prestations.Select(prest => new PrestationViewModel
             {
                 Id = prest.ID,
-                Name = prest.Prestations
+                Name = prest.Name
             }).ToList();
 
             return View(res);
         }
-        //[HttpPost("Create")]
-        //public IActionResult CreateRDV()
-        //{
-
-        //}
-
     }
 }
 

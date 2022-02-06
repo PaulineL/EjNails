@@ -17,7 +17,7 @@
                 @foreach (var presta in Model)
                 {
                 <tr>
-                    <td>@presta.Prestations</td>
+                    <td>@presta.Name</td>
                     <td>@presta.Duration</td>
                     <td>@presta.Price €</td>
                     <td><a asp-action="EditPrestation" asp-route-id="@presta.ID"><button class="btn btn-success">Modifier</button></a></td>

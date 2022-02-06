@@ -58,6 +58,5 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Admin\" />
-    <Folder Include="Data\" />
   </ItemGroup>
 </Project>
