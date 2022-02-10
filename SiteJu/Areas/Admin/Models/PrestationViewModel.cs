@@ -15,16 +15,18 @@ namespace SiteJu.Areas.Admin.Models
         [DisplayName("Prix")]
         public int Price { get; set; }
         public bool IsSelected { get; set; }
+        [DisplayName("Catégorie")]
 
+        // Fait le lient entre une prestation ET sa categorie
         public PrestationCategoryViewModel Category { get; set; }
+
+        // Permets a la vue de lister TOUTES les categories disponible
+        // afin que l'utilisateurs puissent en associer une avec la prestation
+        // qu'il veut modifier ou creer
+        public List<PrestationCategoryViewModel> CategoryAvailable { get; set; }
 
         public List<PrestationOptionViewModel> Options { get; set; }
     }
 
-    public class PrestationCategoryViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
 }
 

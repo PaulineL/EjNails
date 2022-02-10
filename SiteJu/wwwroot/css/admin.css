@@ -26,3 +26,7 @@ display:grid;
 .menu_left {
     display: inherit;
 }
+
+.box {
+    display: none;
+}

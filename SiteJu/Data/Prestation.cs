@@ -10,6 +10,10 @@ namespace SiteJu.Data
         public string Name { get; set; }
         public int Price { get; set; }
         public TimeSpan Duration { get; set; }
+
+        // Clé étrangére de Category, il reconnait que c'est l'id de Category auto par convention de nommage 
+        public int CategoryId { get; set; }
+
         public PrestationCategory Category { get; set; }
 
         public ICollection<RDV> RDVS { get; set; }

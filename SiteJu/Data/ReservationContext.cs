@@ -18,6 +18,7 @@ namespace SiteJu.Data
         public DbSet<RDV> RDVS { get; set; }
         public DbSet<Prestation> Prestations { get; set; }
         public DbSet<PrestationOption> PrestationOptions { get; set; }
+        public DbSet<PrestationCategory> PrestationCategory { get; set; }
 
         // converti model C# en model BDD
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -37,7 +38,9 @@ namespace SiteJu.Data
                 .WithMany(po => po.Options)
                 .UsingEntity(rp => rp.ToTable("RDVPrestationsOptions"));
 
-
+            // On specifie les noms des tables pour ces deux entitées pour eviter de melanger les données de ces deux entité
+            // dans la même tables car par defaut EF gere l'héritage d'entitées dans la même table, en spécifiant deux tables differentes
+            // on le force a separer les données dans des tables differentes
             modelBuilder.Entity<Prestation>().ToTable("Prestations");
             modelBuilder.Entity<PrestationOption>().ToTable("PrestationsOptions");
         }
