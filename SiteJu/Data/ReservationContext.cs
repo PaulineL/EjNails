@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
 namespace SiteJu.Data
@@ -18,7 +19,7 @@ namespace SiteJu.Data
         public DbSet<RDV> RDVS { get; set; }
         public DbSet<Prestation> Prestations { get; set; }
         public DbSet<PrestationOption> PrestationOptions { get; set; }
-        public DbSet<PrestationCategory> PrestationCategory { get; set; }
+        public DbSet<PrestationCategory> PrestationCategorys { get; set; }
 
         // converti model C# en model BDD
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -43,6 +44,8 @@ namespace SiteJu.Data
             // on le force a separer les données dans des tables differentes
             modelBuilder.Entity<Prestation>().ToTable("Prestations");
             modelBuilder.Entity<PrestationOption>().ToTable("PrestationsOptions");
+            modelBuilder.Entity<PrestationCategory>().ToTable("PrestationsCategorys");
+
         }
 
     }

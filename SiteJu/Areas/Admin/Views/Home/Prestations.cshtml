@@ -5,18 +5,20 @@
     <h1>Mes prestations</h1>
 
     <a asp-action="CreatePrestation"><button class="btn btn-primary">Ajouter une prestation</button></a>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">Nom</th>
-                    <th scope="col">Durée</th>
-                    <th scope="col">Catégorie</th>
-                    <th scope="col">Prix</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var presta in Model)
-                {
+    <a asp-action="CreateCategory"><button class="btn btn-primary">Ajouter une catégorie</button></a>
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Durée</th>
+                <th scope="col">Catégorie</th>
+                <th scope="col">Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var presta in Model)
+            {
                 <tr>
                     <td>@presta.Name</td>
                     <td>@presta.Duration</td>
@@ -31,7 +33,7 @@
                     </td>
 
                 </tr>
-                }
-            </tbody>
-        </table>
+            }
+        </tbody>
+    </table>
 </div>

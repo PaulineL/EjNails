@@ -71,16 +71,16 @@ namespace SiteJu.Areas.Admin.Controllers
             /********************************************************************************************/
             vm.Options = _context.PrestationOptions.Select(p => new PrestationOptionViewModel
             {
-                Id=p.ID,
+                Id = p.ID,
                 Duration = Convert.ToInt32(p.AdditionalTime.TotalMinutes),
-                IsSelected=false,
-                Name= p.Name,
+                IsSelected = false,
+                Name = p.Name,
                 Price = p.AdditionalPrice,
-                MaxQuantity= p.MaxAvailable, 
-                Quantity= 0
+                MaxQuantity = p.MaxAvailable,
+                Quantity = 0
             }).ToList();
 
-            vm.CategoryAvailable = _context.PrestationCategory.Select(pc => new PrestationCategoryViewModel
+            vm.CategoryAvailable = _context.PrestationCategorys.Select(pc => new PrestationCategoryViewModel
             {
                 Id = pc.Id,
                 Name = pc.Name
@@ -99,7 +99,7 @@ namespace SiteJu.Areas.Admin.Controllers
             // On ne remonte que les category selectionner dans le formulaire (voir ligne 100)
             // avec la liste des ids des category selectionner dans le formulaires,
             // on filtre le resultat de la base de données
-            var categorys = _context.PrestationCategory.Where(pc => selectedOptionIds.Contains(pc.Id));
+            var categorys = _context.PrestationCategorys.Where(pc => selectedOptionIds.Contains(pc.Id));
             var prestation = new Prestation
             {
                 Name = prestationVM.Name,
@@ -128,21 +128,21 @@ namespace SiteJu.Areas.Admin.Controllers
         {
             var prestation = _context.Prestations.Include(p => p.OptionsAvailable).FirstOrDefault(p => p.ID == id);
             var allOptions = _context.PrestationOptions.ToList();
-            var categorys = _context.PrestationCategory.ToList();
+            var categorys = _context.PrestationCategorys.ToList();
             var prestVm = new PrestationViewModel
             {
                 Id = prestation.ID,
                 Duration = Convert.ToInt32(prestation.Duration.TotalMinutes),
                 Name = prestation.Name,
                 Price = prestation.Price,
-                Category= new PrestationCategoryViewModel { Id= prestation.CategoryId },
+                Category = new PrestationCategoryViewModel { Id = prestation.CategoryId },
 
                 CategoryAvailable = categorys.Select(pc => new PrestationCategoryViewModel
                 {
                     Id = pc.Id,
-                    Name=pc.Name,
+                    Name = pc.Name,
                 }).ToList(),
-                
+
                 Options = allOptions.Select(po => new PrestationOptionViewModel
                 {
                     Id = po.ID,
@@ -161,7 +161,7 @@ namespace SiteJu.Areas.Admin.Controllers
             // Dans la BDD, dans la table prestations options je selectionne que les id où la case est cochée.
             var options = _context.PrestationOptions.Where(po => selectedOptionIds.Contains(po.ID)).ToList();
             // Ajoute les options dispos
-            Prestation presta = _context.Prestations.Include(p=> p.OptionsAvailable).FirstOrDefault(p => p.ID == prestationVM.Id);
+            Prestation presta = _context.Prestations.Include(p => p.OptionsAvailable).FirstOrDefault(p => p.ID == prestationVM.Id);
 
             presta.Name = prestationVM.Name;
             presta.Price = prestationVM.Price;
@@ -197,6 +197,8 @@ namespace SiteJu.Areas.Admin.Controllers
 
         }
 
+
+
         [HttpGet("Clients")]
         public IActionResult Clients()
         {
@@ -210,11 +212,13 @@ namespace SiteJu.Areas.Admin.Controllers
             });
             return View(clients);
         }
+
         [HttpGet("CreateClient")]
         public IActionResult CreateClient()
         {
             return View();
         }
+
 
         [HttpPost("CreateClient")]
         public IActionResult CreateClient(ClientViewModel clientVM)
@@ -302,7 +306,7 @@ namespace SiteJu.Areas.Admin.Controllers
         }
 
         [HttpGet("SearchClient")]
-        public IActionResult SearchClient([FromQuery(Name ="lastname")] string lastname)
+        public IActionResult SearchClient([FromQuery(Name = "lastname")] string lastname)
         {
             if (lastname == null)
             {
@@ -367,9 +371,9 @@ namespace SiteJu.Areas.Admin.Controllers
             else
             // Sinon utiliser l'id du client selectionné
             {
-               rdv.ClientId = rdvForm.ClientId;
+                rdv.ClientId = rdvForm.ClientId;
             }
-            
+
             _context.RDVS.Add(rdv);
             _context.SaveChanges();
 
@@ -380,6 +384,34 @@ namespace SiteJu.Areas.Admin.Controllers
             else
             {
                 return View(rdv);
+            }
+
+        }
+
+        [HttpGet("CreateCategory")]
+        public IActionResult CreateCategory()
+        {
+            return View("CreateCategory");
+
+        }
+        [HttpPost("CreateCategory")]
+        public IActionResult CreateCategory(PrestationCategoryViewModel categoryVM)
+        {
+            var category = new PrestationCategory
+            {
+                Name = categoryVM.Name
+            };
+
+            _context.PrestationCategorys.Add(category);
+            _context.SaveChanges();
+
+            if (category.Id != 0)
+            {
+                return Redirect("Clients");
+            }
+            else
+            {
+                return View(category);
             }
 
         }
