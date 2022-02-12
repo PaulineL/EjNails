@@ -292,16 +292,22 @@ namespace SiteJu.Areas.Admin.Controllers
             var filteredRendezVous = _context.RDVS.Include(rdv => rdv.Client).Where(rdv => start <= rdv.At && rdv.At <= end);
             var result = filteredRendezVous.Select(rdv => new
             {
+                id = rdv.Id,
                 start = rdv.At,
                 duration = rdv.Prestations.Select(presta => presta.Duration),
                 title = rdv.Client.Firstname + " " + rdv.Client.Lastname,
+                prestations = String.Join(',', rdv.Prestations.Select(p => p.Name).ToList())
+
             }).ToList();
 
             return Json(result.Select(rdv => new
             {
+                id = rdv.id,
                 start = rdv.start,
                 end = rdv.start + new TimeSpan(rdv.duration.Sum(p => p.Ticks)),
-                title = rdv.title
+                title = rdv.title,
+                url = "Admin/EditRDV?id=" + rdv.id,
+                prestations = rdv.prestations
             }));
         }
 
@@ -384,7 +390,63 @@ namespace SiteJu.Areas.Admin.Controllers
             else
             {
                 return View(rdv);
-            }
+            } 
+        }
+
+        [HttpGet("EditRDV")]
+        public IActionResult EditRDV([FromQuery] int id)
+        {
+            // Je remonte toutes les prestations de la BDD afin que l'utilisateur puisse changer la presta choisi
+            var prestations = _context.Prestations.ToList();
+
+            // Je fais une requête dans la table Rdv pour récuperer les prestations cochées du rdv  ainsi que le client.
+            var rdv = _context.RDVS.Include(p => p.Client).Include(p => p.Prestations).FirstOrDefault(p => p.Id == id);
+            RDVViewModel rdvVm = new RDVViewModel
+            {
+                Id = rdv.Id,
+                At = rdv.At,
+                // Je selectionne les prestations pour créer un PrestaVM
+                Client = new ClientViewModel{ ID= rdv.Client.ID, Firstname=rdv.Client.Firstname, Lastname=rdv.Client.Lastname, Telephone=rdv.Client.Telephone, Email= rdv.Client.Email},
+                Prestation = prestations.Select(presta => new PrestationViewModel
+                {
+                    Id = presta.ID,
+                    Name = presta.Name,
+
+                    // Les prestations selectionnées
+                    IsSelected = rdv.Prestations.Any(p => p.ID == presta.ID),
+
+                }).ToList(),    
+            };
+            return View(rdvVm);
+        }
+
+        [HttpPost("EditRDV")]
+        public IActionResult EditRDV(RDVViewModel rdvForm)
+        {
+            // Par rapport au full calendar :
+            // Start
+            // End
+
+            // Je dois récup l'id du rdv que je veux changer de place
+
+            var rdv = new RDV
+            {
+                At = rdvForm.At,
+            };
+
+            _context.RDVS.Update(rdv);
+            _context.SaveChanges();
+
+            return Redirect("RDV");
+        }
+
+        [HttpPost("DeleteRDV")]
+        public IActionResult DeleteRDV(int id)
+        {
+            _context.RDVS.Remove(new RDV { Id = id });
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
 
         }
 
@@ -415,5 +477,6 @@ namespace SiteJu.Areas.Admin.Controllers
             }
 
         }
+
     }
 }
