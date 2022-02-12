@@ -160,13 +160,16 @@ namespace SiteJu.Areas.Admin.Controllers
             var selectedOptionIds = prestationVM.Options.Where(so => so.IsSelected).Select(so => so.Id).ToList();
             // Dans la BDD, dans la table prestations options je selectionne que les id où la case est cochée.
             var options = _context.PrestationOptions.Where(po => selectedOptionIds.Contains(po.ID)).ToList();
-            // Ajoute les options dispos
+            // La prestation que l'on veut éditer avec ces options available
             Prestation presta = _context.Prestations.Include(p => p.OptionsAvailable).FirstOrDefault(p => p.ID == prestationVM.Id);
 
+            // Je modifie la prestation de la BDD avec les valeurs du formulaire
             presta.Name = prestationVM.Name;
             presta.Price = prestationVM.Price;
             presta.Duration = TimeSpan.FromMinutes(prestationVM.Duration);
             presta.CategoryId = prestationVM.Category.Id;
+
+            // Je modifie les options de la prestation de la BDD
             foreach (var opt in prestationVM.Options)
             {
                 //si la presta option n'est pas sélectioné dans le formulaire mais est present dans la liste des options compatible, on la supprime
@@ -181,6 +184,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 }
             }
 
+            // Je mets à jour la prestation avec les nouvelles valeurs dans la BDD
             _context.Prestations.Update(presta);
             _context.SaveChanges();
 
@@ -421,23 +425,37 @@ namespace SiteJu.Areas.Admin.Controllers
         }
 
         [HttpPost("EditRDV")]
-        public IActionResult EditRDV(RDVViewModel rdvForm)
+        public IActionResult EditRDV(RDVViewModel rdvVM)
         {
-            // Par rapport au full calendar :
-            // Start
-            // End
+            // Selectionne les prestations cochées par isSelected avec l'id de la prestation
+            var selectedPrestationIds = rdvVM.Prestation.Where(p => p.IsSelected).Select(p => p.Id).ToList();
 
-            // Je dois récup l'id du rdv que je veux changer de place
+            // Trie les prestations dans la BDD qui sont selectionnées
+            var prestations = _context.Prestations.Where(p => selectedPrestationIds.Contains(p.ID)).ToList();
 
-            var rdv = new RDV
+            // Le rdv que l'on veut éditer avec les nouvelles prestations
+            RDV rdv = _context.RDVS.Include(r => r.Prestations).FirstOrDefault(p => p.Id == rdvVM.Id);
+
+            rdv.At = rdvVM.At;
+            rdv.Prestations = prestations;
+
+
+            foreach(var prest in rdvVM.Prestation)
             {
-                At = rdvForm.At,
-            };
+                if(!prest.IsSelected && rdv.Prestations.Any(p => p.ID == prest.Id))
+                {
+                    rdv.Prestations.Remove(rdv.Prestations.First(p => p.ID == prest.Id));
+                }
+                else if (prest.IsSelected && !rdv.Prestations.Any(p => p.ID == prest.Id))
+                {
+                    rdv.Prestations.Add(prestations.First(p => p.ID == prest.Id));
+                }
+            }
 
             _context.RDVS.Update(rdv);
             _context.SaveChanges();
 
-            return Redirect("RDV");
+            return RedirectToAction("Index");
         }
 
         [HttpPost("DeleteRDV")]
