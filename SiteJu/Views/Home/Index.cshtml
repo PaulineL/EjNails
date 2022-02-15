@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "EJ Nails";
 }
-@model HomeViewModel;
+@model HomeViewModel
 
 <partial name="_logo" />
 
@@ -49,7 +49,7 @@ else if (ViewData.ContainsKey("HasMailError")
 
 @*MES PRESTATIONS*@
 <section id="prestations" class="appear prestations">
-    <partial name="Prestations" />
+    <partial name="Prestations" model="Model.Prestations" />
 </section>
 
 @*FORMULAIRE DE CONTACT*@

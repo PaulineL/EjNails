@@ -1,4 +1,7 @@
-﻿@model RDVViewModel
+﻿@{
+    ViewData["Title"] = "Créer un rdv";
+}
+@model RDVViewModel
 
 <link href="~/css/admin.css" rel="stylesheet">
 
@@ -8,10 +11,10 @@
         <div class="col-8">
             @using (Html.BeginForm("CreateRDV", "Home", FormMethod.Post))
             {
-            <div class="form-group">
-                @Html.LabelFor(model => model.At, new { @class = "form-label" })
-                @Html.EditorFor(x => x.At)
-            </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.At, new { @class = "form-label" })
+                    @Html.EditorFor(x => x.At)
+                </div>
                 <div class="form-group">
                     <div>
                         <label><input type="radio" name="box" value="existing-client">Rechercher un client</label>
@@ -21,7 +24,7 @@
                     <div class="existing-client box">
                         <input type="text" class="form-control" id="search-client" placeholder="Taper un nom" />
 
-                        <select id="search-client-result" name="ClientId"class="form-select" multiple aria-label="multiple select example">
+                        <select id="search-client-result" name="ClientId" class="form-select" multiple aria-label="multiple select example">
                         </select>
                     </div>
                     <div class="create-client box">
@@ -48,11 +51,11 @@
                     <h2>Prestations</h2>
                     @for (int i = 0; i < Model.Prestation.Count; i++)
                     {
-                    <div class="form-check">
-                        @Html.HiddenFor(model => model.Prestation[i].Id)
-                        @Html.CheckBoxFor(model => model.Prestation[i].IsSelected, new { @class = "form-check-input" })
-                        @Html.DisplayFor(model => model.Prestation[i].Name, new { @class = "form-check-label" })
-                    </div>
+                        <div class="form-check">
+                            @Html.HiddenFor(model => model.Prestation[i].Id)
+                            @Html.CheckBoxFor(model => model.Prestation[i].IsSelected, new { @class = "form-check-input" })
+                            @Html.DisplayFor(model => model.Prestation[i].Name, new { @class = "form-check-label" })
+                        </div>
                     }
                 </div>
                 <button type="submit" class="btn btn-primary">Envoyer</button>
@@ -104,14 +107,14 @@
 
 <script>$(function () {
 
-    $(document).ready(function () {
-        $('input[type="radio"]').click(function () {
-            var inputValue = $(this).attr("value");
-            var targetBox = $("." + inputValue);
-            $(".box").not(targetBox).hide();
-            $(targetBox).show();
+        $(document).ready(function () {
+            $('input[type="radio"]').click(function () {
+                var inputValue = $(this).attr("value");
+                var targetBox = $("." + inputValue);
+                $(".box").not(targetBox).hide();
+                $(targetBox).show();
+            });
         });
-    });
 
         const clientSearchInput = document.getElementById('search-client');
 

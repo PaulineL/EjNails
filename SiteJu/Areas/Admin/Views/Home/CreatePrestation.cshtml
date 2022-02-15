@@ -1,4 +1,7 @@
-﻿@model PrestationViewModel
+﻿@{
+    ViewData["Title"] = "Créer une prestation";
+}
+@model PrestationViewModel
 
 <div class="container">
     <h1>Créer une prestation</h1>
@@ -19,7 +22,7 @@
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Category, new { @class = "form-label" })
-            @Html.DropDownListFor(m => m.Category.Id, new SelectList(Model.CategoryAvailable,"Id","Name"))
+            @Html.DropDownListFor(m => m.Category.Id, new SelectList(Model.CategoryAvailable, "Id", "Name"))
         </div>
 
         <h2>Options Disponible</h2>

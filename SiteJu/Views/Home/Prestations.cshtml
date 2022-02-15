@@ -1,55 +1,40 @@
 ﻿@{
     ViewData["Title"] = "Prestations - EJ Nails";
 }
+
+@model IEnumerable<PrestationViewModel>
+
+
 <h1 class="title-section text-center">Mes prestations</h1>
 
 <div class="container padding-presta">
     <table class="table table-borderless" style="background-color:transparent;">
-        <thead>
-            <tr>
-                <th class="title-presta text-uppercase" scope="col">Gel</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Pose complète capsules gel</td>
-                <td>45€</td>
-            </tr>
-            <tr>
-                <td>Gel sur ongles naturels</td>
-                <td>40€</td>
-            </tr>
-                        <tr>
-                <td>Remplissage</td>
-                <td>40€</td>
-            </tr>
-            <tr>
-                <td>Supplément Pose XL</td>
-                <td>+5€</td>
-            </tr>
-            <tr>
-                <th class="title-presta text-uppercase" scope="col">Vernis Semi-permanent</th>
-            </tr>
-            <tr>
-                <td>Vernis semi-permanent</td>
-                <td>35€</td>
-            </tr>
-            <tr>
-                <td>Dépose</td>
-                <td>20€</td>
-            </tr>
-            <tr>
-                <th class="title-presta text-uppercase" scope="col">Nail Art</th>
-            </tr>
-            <tr>
-                <td>Entre 0,50 cts et 3€ /Doigt</td>
-                <td>+5€</td>
-            </tr>
-        </tbody>
+
+        @foreach (var prestationsGroup in Model.GroupBy(p => p.Category.Name))
+        {
+
+                <thead>
+                    <tr>
+                        <th class="title-presta text-uppercase" scope="col">@prestationsGroup.Key</th>
+                    </tr>
+                </thead>
+                @foreach (var presta in prestationsGroup)
+                {
+
+                <tbody>
+
+                    <tr>
+                        <td>@presta.Name</td>
+                        <td>@presta.Price €</td>
+                    </tr>
+
+                </tbody>
+                    }
+        }
     </table>
     <div class="text-center">
-            <p> Réparation d'un ongle cassé : 3 €</p>
-    <p>3 ongles cassés = pose complète </p>
+        <p> Réparation d'un ongle cassé : 3 €</p>
+        <p>3 ongles cassés = pose complète </p>
     </div>
 
 </div>

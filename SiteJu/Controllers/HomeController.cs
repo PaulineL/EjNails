@@ -9,18 +9,36 @@ using SendGrid;
 using SendGrid.Helpers.Mail;
 using Infrastructure.Mail;
 using SiteJu.Configuration;
+using SiteJu.Data;
+using SiteJu.Areas.Admin.Models;
+using System.Linq;
 
 namespace SiteJu.Controllers
 {
     [Route("/")]
     public class HomeController : Controller
     {
+        private readonly ReservationContext _context;
+
+        public HomeController(ReservationContext context)
+        {
+            _context = context;
+        }
+
         [HttpGet("")]
         public IActionResult Index([FromServices]IOptions<Web> options)
         {
             HomeViewModel VM = new()
             {
-                ProfilPicture = options.Value.ProfilPicture
+                ProfilPicture = options.Value.ProfilPicture,
+                Prestations = _context.Prestations.Select(p => new PrestationViewModel
+                {
+                    Name = p.Name,
+                    Price = p.Price,
+                    // Je veux juste afficher la catégorie
+                    Category = new PrestationCategoryViewModel { Name = p.Category.Name },
+                }).ToList()
+
             };
 
             return View(VM);
@@ -50,5 +68,6 @@ namespace SiteJu.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
+    
 }
 

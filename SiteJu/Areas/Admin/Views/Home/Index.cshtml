@@ -1,38 +1,40 @@
-﻿<div class="container">
+﻿@{
+    ViewData["Title"] = "Planning";
+}
+
+<div class="container">
     <div id='calendar'></div>
 
     <script>document.addEventListener('DOMContentLoaded', () => {
-        var calendarEl = document.getElementById('calendar');
+            var calendarEl = document.getElementById('calendar');
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-            initialView: 'timeGridWeek',
-            locale: 'fr',
-            allDaySlot: false,
-            slotMinTime: '08:00:00',
-            slotMaxTime: '20:00:00',
-            weekends: false,
-            aspectRatio: 2,
-            editable: false,
-            eventSources: [{
-                url: '/admin/rdv'
-            }],
-            eventDidMount: function (info) {
-                let prestas = info.event.extendedProps.prestations
-                $(info.el).tooltip({
-                    title: prestas,
-                    placement: 'top',
-                    trigger: 'hover',
-                    container: 'body'
-                });
-            },
-            headerToolbar: {
-                start: 'prev, next today',
-                center: 'title',
-                end: 'dayGridMonth,timeGridWeek'
-            },
-
-        });
-        calendar.render();
-    });
-    </script>
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'timeGridWeek',
+                locale: 'fr',
+                allDaySlot: false,
+                slotMinTime: '08:00:00',
+                slotMaxTime: '20:00:00',
+                weekends: false,
+                aspectRatio: 2,
+                editable: false,
+                eventSources: [{
+                    url: '/admin/rdv'
+                }],
+                eventDidMount: function (info) {
+                    let prestas = info.event.extendedProps.prestations
+                    $(info.el).tooltip({
+                        title: prestas,
+                        placement: 'top',
+                        trigger: 'hover',
+                        container: 'body'
+                    });
+                },
+                headerToolbar: {
+                    start: 'prev,next,today',
+                    center: 'title',
+                    end: 'dayGridMonth,timeGridWeek'
+                },
+            });
+            calendar.render();
+        });</script>
 </div>

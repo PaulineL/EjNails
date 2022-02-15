@@ -30,3 +30,5 @@ display:grid;
 .box {
     display: none;
 }
+.buttons{
+    display:flex;

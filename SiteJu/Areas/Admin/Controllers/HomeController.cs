@@ -7,6 +7,7 @@ using SiteJu.Models;
 using System;
 using System.Linq;
 
+
 namespace SiteJu.Areas.Admin.Controllers
 {
     [Authorize("Admin")]
@@ -16,6 +17,8 @@ namespace SiteJu.Areas.Admin.Controllers
     {
         private readonly ReservationContext _context;
 
+        // Constructeur : fonction appellée quand on instance un objet (new)
+        // injection de dépendance dans le paramêtre du constructeur
         public HomeController(ReservationContext context)
         {
             _context = context;
