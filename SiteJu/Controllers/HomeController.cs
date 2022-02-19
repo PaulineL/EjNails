@@ -12,6 +12,7 @@ using SiteJu.Configuration;
 using SiteJu.Data;
 using SiteJu.Areas.Admin.Models;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SiteJu.Controllers
 {
@@ -60,6 +61,14 @@ namespace SiteJu.Controllers
 
             return View("Index");
         }
+
+        //[Authorize("RDV")]
+        [HttpGet("RDV")]
+        public IActionResult RDV()
+        {
+            return View("RDV");
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         [HttpGet("error")]

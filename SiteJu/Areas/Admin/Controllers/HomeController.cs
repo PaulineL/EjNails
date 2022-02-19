@@ -470,6 +470,28 @@ namespace SiteJu.Areas.Admin.Controllers
             return RedirectToAction("Index");
 
         }
+        [HttpGet("Categorys")]
+        public IActionResult Categorys()
+        {
+            var categories = _context.PrestationCategorys.Select(cat => new PrestationCategoryViewModel
+            {
+                Id = cat.Id,
+                Name = cat.Name,
+            });
+            return View(categories);
+
+        }
+
+        [HttpPost("DeleteCategory")]
+        public IActionResult DeleteCategory(int id)
+        {
+            var cat = _context.PrestationCategorys.Find(id);
+            _context.PrestationCategorys.Remove(cat);
+            _context.SaveChanges();
+
+            return RedirectToAction("Categorys");
+
+        }
 
         [HttpGet("CreateCategory")]
         public IActionResult CreateCategory()
