@@ -21,6 +21,7 @@ namespace SiteJu.Controllers
     {
         private readonly ReservationContext _context;
 
+
         public HomeController(ReservationContext context)
         {
             _context = context;
@@ -45,6 +46,7 @@ namespace SiteJu.Controllers
             return View(VM);
         }
 
+
         [HttpPost("Contact")]
         public async Task<IActionResult> Contact(HomeViewModel vm, [FromServices] IMailSender _mailSender)
         {
@@ -60,13 +62,6 @@ namespace SiteJu.Controllers
             }
 
             return View("Index");
-        }
-
-        //[Authorize("RDV")]
-        [HttpGet("RDV")]
-        public IActionResult RDV()
-        {
-            return View("RDV");
         }
 
 

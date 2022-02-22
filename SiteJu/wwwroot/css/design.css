@@ -77,17 +77,6 @@ body {
 
 }
 
-/* Menu */
-.menu {
-    z-index: 100;
-    left: 0;
-    background-color: transparent;
-    right: 0;
-    font-family: "Latolight";
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    font-weight: bold;
-}
 
 /* Section 1 */
 .profil {

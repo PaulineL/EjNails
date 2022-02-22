@@ -114,6 +114,7 @@ namespace SiteJu
             app.UseAuthentication();
             app.UseAuthorization();
 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true, true)));
@@ -130,6 +131,8 @@ namespace SiteJu
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}");
+
+
                 endpoints.MapRazorPages();
             });
         }
