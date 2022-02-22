@@ -14,6 +14,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web.UI;
 using Microsoft.Identity.Web;
+using SiteJu.Data;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using SiteJu.Helpers;
 
 namespace SiteJu
 {
@@ -29,41 +35,28 @@ namespace SiteJu
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDatabaseDeveloperPageExceptionFilter();
+
             services
-                .AddAuthentication()
-                .AddMicrosoftIdentityWebApp(options =>
+                .AddAuthentication("AzureAD")
+                .AddMicrosoftIdentityWebApp(Configuration, "AzureAd", "AzureAD", cookieScheme: null, displayName: "Azure AD");
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Admin", policy =>
                 {
-                    Configuration.Bind("AzureAd", options);
-
-                    options.Events = new Microsoft.AspNetCore.Authentication.OpenIdConnect.OpenIdConnectEvents()
-                    {
-                        OnAuthenticationFailed = async e =>
-                        {
-
-                        },
-                        OnAuthorizationCodeReceived = async e =>
-                        {
-
-                        },
-                        OnRemoteFailure = async e =>
-                        {
-
-                        },
-                        OnAccessDenied = async e =>
-                        {
-
-                        },
-                        OnRedirectToIdentityProvider = async e =>
-                        {
-
-                        }
-                    };
+                    policy.RequireClaim(ClaimTypes.AuthenticationMethod, "AzureAD");
+                    policy.RequireAuthenticatedUser();
                 });
+            });
 
-
-            services.AddControllersWithViews()
+            services
+                .AddControllersWithViews()
+                .AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles)
                 .AddMicrosoftIdentityUI()
                 .AddRazorRuntimeCompilation();
+
+            services.AddRazorPages();
 
             services.Configure<MailOption>(Configuration.GetSection("Mail"));
             services.Configure<Web>(Configuration.GetSection("Web"));
@@ -86,18 +79,15 @@ namespace SiteJu
             {
                 services.AddSingleton<IMailSender, MailSenderDefault>();
             }
+            services.AddTransient<IEmailSender, IdentityMailSender>();
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<SiteJuIdentityDbContext>(options =>
-                options.UseSqlite(connectionString));
 
-            services.AddDatabaseDeveloperPageExceptionFilter();
+            services.AddDbContext<SiteJuIdentityDbContext>(options => options.UseSqlite(connectionString));
+            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<SiteJuIdentityDbContext>();
 
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddEntityFrameworkStores<SiteJuIdentityDbContext>();
-
-
-            services.AddRazorPages();
+            // Context Réservation
+            services.AddDbContext<ReservationContext>(options => options.UseSqlite(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -121,15 +111,29 @@ namespace SiteJu
 
             app.UseRouting();
 
-            app.UseAuthorization();
             app.UseAuthentication();
+            app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapGet("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true, true)));
+                endpoints.MapPost("/Identity/Account/Register", context => Task.Factory.StartNew(() => context.Response.Redirect("/Identity/Account/Login", true, true)));
+
+                app.UseEndpoints(endpoints =>
+                {
+                    endpoints.MapControllerRoute(
+                      name: "areas",
+                      pattern: "{area:exists}/{controller=Home}/{action=Index}"
+                    );
+                });
+
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}");
+
+
+                endpoints.MapRazorPages();
             });
         }
     }

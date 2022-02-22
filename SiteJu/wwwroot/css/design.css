@@ -77,17 +77,6 @@ body {
 
 }
 
-/* Menu */
-.menu {
-    z-index: 100;
-    left: 0;
-    background-color: transparent;
-    right: 0;
-    font-family: "Latolight";
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-    font-weight: bold;
-}
 
 /* Section 1 */
 .profil {
@@ -126,8 +115,8 @@ max-height: 400px;
 }
 
 .padding-presta {
-    padding-right: 22%;
-    padding-left: 22%;
+    padding-right: 15%;
+    padding-left: 25%;
     padding-top: 2%;
 }
 
@@ -162,4 +151,8 @@ footer {
 }
 .copyright {
     margin-top: 2%;
+}
+
+.padding-td {
+    width : 30%;
 }

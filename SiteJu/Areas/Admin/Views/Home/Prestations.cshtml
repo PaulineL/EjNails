@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Prestations";
+}
+
+@model IEnumerable<PrestationViewModel>
+
+<div class="container">
+
+    <h1>Mes prestations</h1>
+
+    <a asp-action="CreatePrestation"><button class="btn btn-primary">Ajouter une prestation</button></a>
+    <a asp-action="Categorys"><button class="btn btn-primary">Catégories</button></a>
+
+
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nom</th>
+                <th scope="col">Durée</th>
+                <th scope="col">Catégorie</th>
+                <th scope="col">Prix</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var presta in Model)
+            {
+                <tr>
+                    <td>@presta.Name</td>
+                    <td>@presta.Duration</td>
+                    <td>@presta.Category.Name</td>
+                    <td>@presta.Price €</td>
+                    <td><a asp-action="EditPrestation" asp-route-id="@presta.Id"><button class="btn btn-success">Modifier</button></a></td>
+                    <td>
+                        <form method="post" asp-action="DeletePrestation">
+                            @Html.Hidden("id", presta.Id)
+                            <button class="btn btn-danger" type="submit">Supprimer</button>
+                        </form>
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
