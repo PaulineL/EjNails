@@ -8,6 +8,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SiteJu.Data;
 using Microsoft.Extensions.DependencyInjection;
+using SiteJu.Areas.Identity.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace SiteJu
 {
@@ -31,6 +33,8 @@ namespace SiteJu
                 {
                     var context = services.GetRequiredService<ReservationContext>();
                     DbInitializer.Initialize(context);
+                    var identityDbContext = services.GetRequiredService<SiteJuIdentityDbContext>();
+                    identityDbContext.Database.Migrate();
                 }
                 catch (Exception ex)
                 {
