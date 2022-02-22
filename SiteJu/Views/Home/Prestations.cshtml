@@ -7,12 +7,11 @@
 
 <h1 class="title-section text-center">Mes prestations</h1>
 
-<div class="container padding-presta">
+<div class="container-fluid padding-presta">
     <table class="table table-borderless" style="background-color:transparent;">
 
         @foreach (var prestationsGroup in Model.GroupBy(p => p.Category.Name))
         {
-
                 <thead>
                     <tr>
                         <th class="title-presta text-uppercase" scope="col">@prestationsGroup.Key</th>
@@ -22,10 +21,9 @@
                 {
 
                 <tbody>
-
                     <tr>
                         <td>@presta.Name</td>
-                        <td>@presta.Price €</td>
+                        <td class="padding-td">@presta.Price €</td>
                     </tr>
 
                 </tbody>

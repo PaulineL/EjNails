@@ -115,8 +115,8 @@ max-height: 400px;
 }
 
 .padding-presta {
-    padding-right: 22%;
-    padding-left: 22%;
+    padding-right: 15%;
+    padding-left: 25%;
     padding-top: 2%;
 }
 
@@ -151,4 +151,8 @@ footer {
 }
 .copyright {
     margin-top: 2%;
+}
+
+.padding-td {
+    width : 30%;
 }
