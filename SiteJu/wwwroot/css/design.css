@@ -156,3 +156,15 @@ footer {
 .padding-td {
     width : 30%;
 }
+
+/* Override bootstrap */
+
+.btn-primary {
+    background-color: rgba(190, 79, 106, 0.7);
+    border-color: rgba(252, 13, 147, 0.7);
+}
+
+.btn-primary:hover {
+    background-color: rgba(215, 11, 81, 0.82);
+    border-color: rgba(201, 10, 10, 0.97);
+}
