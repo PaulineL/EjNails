@@ -30,5 +30,38 @@ display:grid;
 .box {
     display: none;
 }
-.buttons{
-    display:flex;
+.buttons {
+    display: flex;
+}
+
+/*En tête du tableau*/
+.fc-scrollgrid-sync-inner {
+    background-color: #DEC9E9;
+}
+
+.fc-button-primary {
+    background-color: #9BA9FF !important;
+}
+    .fc-button-primary:hover {
+        background-color: #AF99FF !important;
+    }
+
+/* Links */
+a {
+    color: black !important;
+}
+.navbar {
+    background-color: #DEC9E9 !important;
+    margin-bottom: 1%;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: rgba(190, 79, 106, 0.7) ;
+    border-color: rgba(252, 13, 147, 0.7);
+}
+
+.btn-primary:hover {
+    background-color: rgba(215, 11, 81, 0.82);
+    border-color: rgba(201, 10, 10, 0.97);
+    }

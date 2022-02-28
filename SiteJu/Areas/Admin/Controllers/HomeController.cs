@@ -470,8 +470,8 @@ namespace SiteJu.Areas.Admin.Controllers
             return RedirectToAction("Index");
 
         }
-        [HttpGet("Categorys")]
-        public IActionResult Categorys()
+        [HttpGet("Categories")]
+        public IActionResult Categories()
         {
             var categories = _context.PrestationCategorys.Select(cat => new PrestationCategoryViewModel
             {
@@ -489,7 +489,7 @@ namespace SiteJu.Areas.Admin.Controllers
             _context.PrestationCategorys.Remove(cat);
             _context.SaveChanges();
 
-            return RedirectToAction("Categorys");
+            return RedirectToAction("Categories");
 
         }
 
@@ -512,7 +512,7 @@ namespace SiteJu.Areas.Admin.Controllers
 
             if (category.Id != 0)
             {
-                return Redirect("Clients");
+                return Redirect("Categories");
             }
             else
             {

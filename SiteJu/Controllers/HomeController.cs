@@ -13,6 +13,7 @@ using SiteJu.Data;
 using SiteJu.Areas.Admin.Models;
 using System.Linq;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Routing;
 
 namespace SiteJu.Controllers
 {
@@ -30,6 +31,13 @@ namespace SiteJu.Controllers
         [HttpGet("")]
         public IActionResult Index([FromServices]IOptions<Web> options)
         {
+            RouteValueDictionary routeValues = this.HttpContext.Request.RouteValues;
+
+            if (HttpContext.Request.Query.ContainsKey("Sent"))
+            {
+                ViewData["HasContactFormSend"] = Convert.ToBoolean(HttpContext.Request.Query["Sent"].First());
+            }
+
             HomeViewModel VM = new()
             {
                 ProfilPicture = options.Value.ProfilPicture,
@@ -52,16 +60,7 @@ namespace SiteJu.Controllers
         {
             bool result = await _mailSender.SendMail(vm.Contact.Email, $"{vm.Contact.LastName} {vm.Contact.Name}", vm.Contact.Message, $"[Web] Prise de contact : {vm.Contact.LastName} {vm.Contact.Name}");
 
-            if (result)
-            {
-                ViewData["HasContactFormSend"] = true;
-            }
-            else
-            {
-                ViewData["HasMailError"] = true;
-            }
-
-            return View("Index");
+            return RedirectToAction("Index", new RouteValueDictionary(new { Controller = "Home", Action = "Index", Sent=result}));
         }
 
 

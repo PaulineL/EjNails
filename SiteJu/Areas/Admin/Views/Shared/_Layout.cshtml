@@ -38,15 +38,15 @@
 
     @{ IgnoreSection("Scripts"); }
     <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-between">
+        <nav class="navbar navbar-expand-lg justify-content-between">
             @*Si l'user est connecté alors afficher ces liens'*@
             @if (SignInManager.IsSignedIn(User))
             {
                 <div class="menu_left">
-                    <a class="nav-link text-dark" asp-action="">Planning</a>
-                    <a class="nav-link text-dark" asp-action="Prestations">Prestations</a>
-                    <a class="nav-link text-dark" asp-action="Clients">Clients</a>
-                    <a class="nav-link text-dark" asp-action="CreateRDV">Créer un rendez-vous</a>
+                    <a class="nav-link" asp-action="">Planning</a>
+                    <a class="nav-link" asp-action="Prestations">Prestations</a>
+                    <a class="nav-link" asp-action="Clients">Clients</a>
+                    <a class="nav-link" asp-action="CreateRDV">Créer un rendez-vous</a>
                 </div>
                 <partial name="_LoginPartial" />
             }
