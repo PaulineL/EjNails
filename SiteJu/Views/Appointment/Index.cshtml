@@ -3,6 +3,39 @@
     Layout = "_Layout";
 }
 
+@model List<PrestationViewModel>
 
-<h1 class="title-section text-center">Prendre rendez-vous</h1>
-
+<div class="container">
+    <h1>Prendre rendez-vous</h1>
+    <h2>1 - Prestations séléctionnées</h2>
+    @using (Html.BeginForm("ValidPresta", "Appointment", FormMethod.Post))
+        {
+        <table class="table table-borderless" style="background-color:transparent;">
+            @{ var i = 0; }
+            @foreach (var prestationsGroup in Model.GroupBy(p => p.Category.Name))
+            {
+                <thead>
+                    <tr>
+                        <th class="text-uppercase" scope="col">@prestationsGroup.Key
+                        <th />
+                    </tr>
+                </thead>
+                @foreach (var presta in prestationsGroup)
+                {
+                    <tbody>
+                        <tr>
+                            <td>
+                                @Html.HiddenFor(model => model[i].Id)
+                                @Html.CheckBoxFor(model => model[i].IsSelected, new { @class = "form-check-input" })
+                            </td>
+                            <td>@presta.Name</td>
+                            <td class="padding-td">@presta.Price €</td>
+                        </tr>
+                        @{ i++; }
+                    </tbody>
+                }
+            }
+        </table>
+        <button class="btn btn-primary" type="submit">Suivant</button>
+    }
+</div>

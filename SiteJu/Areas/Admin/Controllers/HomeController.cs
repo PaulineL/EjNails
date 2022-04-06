@@ -67,7 +67,7 @@ namespace SiteJu.Areas.Admin.Controllers
             // Pourquoi tout est dans option?????
             // ___________________________________________________________________________________________
             // Au moment de creer une prestation, l'utilisateur doit pouvoir choisir quelle sont les options
-            // compatibles avec la prestation qu'il est en train de creer
+            // compatibles avec la prestation qu'il est en train de créer
             // On effectue donc une requete en base de données afin de pouvoir les afficher dans la vue
             // Subtilité : Vu qu'on affiche les options depuis la base de données dans la vue, on doit donc convertir le
             //             resultat en view model (que l'on retrouve ici avec le select)
@@ -99,8 +99,8 @@ namespace SiteJu.Areas.Admin.Controllers
             var options = _context.PrestationOptions.Where(po => selectedOptionIds.Contains(po.ID));
             // Je vais chercher les catégories dans la BDD
             // ___________________________________________________________________________________________
-            // On ne remonte que les category selectionner dans le formulaire (voir ligne 100)
-            // avec la liste des ids des category selectionner dans le formulaires,
+            // On ne remonte que les category selectionnés dans le formulaire (voir ligne 100)
+            // avec la liste des ids des category selectionnés dans le formulaires,
             // on filtre le resultat de la base de données
             var categorys = _context.PrestationCategorys.Where(pc => selectedOptionIds.Contains(pc.Id));
             var prestation = new Prestation
@@ -180,7 +180,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 {
                     presta.OptionsAvailable.Remove(presta.OptionsAvailable.First(oa => oa.ID == opt.Id));
                 }
-                //sinon si l'option est sélectioné dans le formulaire mais n'est pas present dans la liste des options compatible, on l'ajoute
+                //sinon si l'option est sélectionné dans le formulaire mais n'est pas present dans la liste des options compatible, on l'ajoute
                 else if (opt.IsSelected && !presta.OptionsAvailable.Any(oa => oa.ID == opt.Id))
                 {
                     presta.OptionsAvailable.Add(options.First(o => o.ID == opt.Id));
@@ -321,6 +321,7 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpGet("SearchClient")]
         public IActionResult SearchClient([FromQuery(Name = "lastname")] string lastname)
         {
+            // Appel Ajax (return Json)
             if (lastname == null)
             {
                 lastname = String.Empty;
@@ -369,7 +370,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 Prestations = prestations.ToList()
             };
 
-            // Si le radio button est create-client, créer le client
+            // If radio button is create-client => create client
             if (Request.Form["box"].Any(p => p == "create-client"))
             {
                 rdv.Client = new Client
@@ -382,7 +383,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 };
             }
             else
-            // Sinon utiliser l'id du client selectionné
+            // use select client id
             {
                 rdv.ClientId = rdvForm.ClientId;
             }

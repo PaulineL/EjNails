@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Prendre rendez-vous - EJ Nails";
+    Layout = "_Layout";
+}
+
+<div class="container">
+    <h1>Prendre rendez-vous</h1>
+    <h2>2 - Date et heure du rdv</h2>
+
+    <a asp-controller="Appointment" asp-action="Index"><button class="btn btn-primary">Précédent</button></a>
+
+
+    @using (Html.BeginForm("ValidAppointment", "Appointment", FormMethod.Post))
+    {
+        <input type="date" id="start" name="trip-start"
+               value="@DateTime.Now">
+
+        <button class="btn btn-primary" type="submit">Suivant</button>
+
+    }
+
+
+</div>

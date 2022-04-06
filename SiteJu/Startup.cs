@@ -20,6 +20,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SiteJu.Helpers;
+using System;
 
 namespace SiteJu
 {
@@ -86,6 +87,22 @@ namespace SiteJu
             services.AddDbContext<SiteJuIdentityDbContext>(options => options.UseSqlite(connectionString));
             services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<SiteJuIdentityDbContext>();
 
+            // Sessions cookies
+            services.AddDistributedMemoryCache();
+            services.AddSession(options =>
+            {
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+                options.IdleTimeout = TimeSpan.FromSeconds(10000);
+            });
+
+            // TEST
+            services.AddTransient(typeof(ISession), serviceProvider =>
+            {
+                var httpContextAccessor = serviceProvider.GetService<IHttpContextAccessor>();
+                return httpContextAccessor.HttpContext.Session;
+            });
+
             // Context Réservation
             services.AddDbContext<ReservationContext>(options => options.UseSqlite(connectionString));
         }
@@ -104,6 +121,7 @@ namespace SiteJu
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
 
             app.UseStaticFiles();
@@ -115,6 +133,8 @@ namespace SiteJu
             app.UseAuthentication();
             app.UseAuthorization();
 
+            // Session cookies
+            app.UseSession();
 
             app.UseEndpoints(endpoints =>
             {

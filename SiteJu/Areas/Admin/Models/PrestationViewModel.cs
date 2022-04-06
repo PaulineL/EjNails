@@ -17,7 +17,7 @@ namespace SiteJu.Areas.Admin.Models
         public bool IsSelected { get; set; }
         [DisplayName("Catégorie")]
 
-        // Fait le lient entre une prestation ET sa categorie
+        // Fait le lien entre une prestation ET sa categorie
         public PrestationCategoryViewModel Category { get; set; }
 
         // Permets a la vue de lister TOUTES les categories disponible

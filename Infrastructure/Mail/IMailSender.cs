@@ -11,6 +11,7 @@ namespace Infrastructure.Mail
 
 	public class MailSenderDefault : IMailSender
 	{
+
     }
 }
 

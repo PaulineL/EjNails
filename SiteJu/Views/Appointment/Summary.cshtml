@@ -1,0 +1,17 @@
+﻿@model RDVViewModel
+
+<div class="container">
+    <h1>Prendre rendez-vous</h1>
+    <h2>3 - Récapitulatif</h2>
+
+    <p>@Model.At</p>
+
+    @foreach (var presta in Model.Prestation)
+    {
+        <p>@presta.Name</p>
+        <p>@presta.Price</p>
+
+    }
+
+    @*Il faut aussi calculer les prestations entre elles*@
+</div>
