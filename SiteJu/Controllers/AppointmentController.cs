@@ -44,7 +44,10 @@ namespace SiteJu.Controllers
         {
 
             // Id prestations selected by client
-            var selectedPrestaIds = rdvForm.Where(sp => sp.IsSelected).Select(so => so.Id).ToList();
+            var selectedPrestaIds = rdvForm
+                .Where(sp => sp.IsSelected)
+                .Select(so => so.Id)
+                .ToList();
             IQueryable<Prestation> prestations = _context.Prestations.Where(p => selectedPrestaIds.Contains(p.ID));
 
             // Stocker prestations séléctionnées dans une session
@@ -54,20 +57,33 @@ namespace SiteJu.Controllers
         }
 
 
-        // Je récupére les rdvs qui sont déja pris
+        // Get all apppointments
         [HttpGet("SearchAppointment")]
-        public IActionResult SearchAppointment(DateTime date)
+        public IActionResult SearchAppointment([FromQuery(Name = "date")]DateTime date)
         {
-            var rdvAtDate = _context.RDVS.Where(r => r.At.Date == date.Date).Select(rdv => new
-            {
-                rdv.At,
-            }).ToList();
 
-            // Recuperation des prestas selectionnées pour calculer la durée du rdv
-            var prestations = HttpContext.Session.GetString("Prestations");
+            // Services selected for calcul the duration
+            var prestationIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(HttpContext.Session.GetString("Prestations"));
 
+            // Search all appointments on the selected date
+            var rdvAtDate = _context.RDVS
+                .Where(r => r.At.Date == date.Date) // Appointments filter by selected date
+                .Select(rdv => new {
 
-            // Trouver un créneau dans RDV At Date de la durée calculer précédemment
+                At = rdv.At,
+                duration = rdv.Prestations.Select(presta => presta.Duration),
+
+                }).ToList();
+
+            // Search duration of the selected service in BDD
+            var durationMs = _context.Prestations
+                .Where(d => prestationIds.Contains(d.ID)) // Filter by Id
+                .Select(duration => duration.Duration.TotalMilliseconds).ToList();
+
+            // Sum of durations
+            var duration = TimeSpan.FromMilliseconds(durationMs.Sum());
+
+            // Trouver un créneau dans RDV At Date de la durée calculée précédemment
 
             return Json(new {});
         }
@@ -79,13 +95,12 @@ namespace SiteJu.Controllers
             return View();
         }
 
-
+        // Get the date in form
         [HttpPost("ValidAppointment")]
-        public IActionResult ValidAppointment(DateTime dateForm)
+        public IActionResult ValidAppointment([FromBody] DateTime date)
         {
-
             // Stocker la date séléctionné dans une session
-            // HttpContext.Session.SetString("Date", System.Text.Json.JsonSerializer.Serialize(date));
+            HttpContext.Session.SetString("Appointment", System.Text.Json.JsonSerializer.Serialize(date));
 
 
             return RedirectToAction("Summary");
@@ -96,9 +111,10 @@ namespace SiteJu.Controllers
         {
             // Recupérer les données du cookie
             var sessionPrestationsString = HttpContext.Session.GetString("Prestations");
-            //var sessionDate = DateTime HttpContext.Session.GetString("Date");
+            var sessionAppointmentString = HttpContext.Session.GetString("Appointment");
 
             var sessionPrestations = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
+            var sessionAppointment = System.Text.Json.JsonSerializer.Deserialize<DateTime>(sessionAppointmentString);
 
             // Récupérer le nom de la presta
             var prestations = _context.Prestations.Where(p => sessionPrestations.Contains(p.ID)).ToList();
@@ -112,7 +128,7 @@ namespace SiteJu.Controllers
                     Price = p.Price,
 
                 }).ToList(),
-                //At = date,
+                At = sessionAppointment,
 
             };
 

@@ -12,12 +12,33 @@
 
     @using (Html.BeginForm("ValidAppointment", "Appointment", FormMethod.Post))
     {
-        <input type="date" id="start" name="trip-start"
+        <input type="date" id="date" name="date" onchange="dateAppointment()"
                value="@DateTime.Now">
 
         <button class="btn btn-primary" type="submit">Suivant</button>
 
     }
 
-
 </div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+
+<script>
+
+    @*$(function () {
+        const inputDateAppointment = document.getElementById('date');
+        inputDateAppointment.addEventListener('change', dateAppointment);
+    });*@
+
+
+    function dateAppointment(e) {
+
+        let dateValue = document.getElementById('date').value;
+
+        fetch("SearchAppointment?date=" + dateValue).then(async response => {
+            let data = await response.json()
+            console.log(data);
+        })
+    }
+</script>
