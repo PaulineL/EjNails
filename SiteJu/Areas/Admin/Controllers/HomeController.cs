@@ -235,6 +235,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 Lastname = clientVM.Lastname,
                 Telephone = clientVM.Telephone,
                 Email = clientVM.Email,
+                Information = clientVM.Information,
             };
 
             _context.Clients.Add(client);
@@ -260,6 +261,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 Lastname = client.Lastname,
                 Telephone = client.Telephone,
                 Email = client.Email,
+                Information = client.Information,
             };
             return View(clientVm);
         }
@@ -274,6 +276,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 Lastname = clientForm.Lastname,
                 Telephone = clientForm.Telephone,
                 Email = clientForm.Email,
+                Information = clientForm.Information,
             };
 
             _context.Clients.Update(client);

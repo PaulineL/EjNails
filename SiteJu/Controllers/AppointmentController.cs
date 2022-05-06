@@ -61,6 +61,8 @@ namespace SiteJu.Controllers
         [HttpGet("SearchAppointment")]
         public IActionResult SearchAppointment([FromQuery(Name = "date")]DateTime date)
         {
+            // Stocker la date séléctionné dans une session
+            HttpContext.Session.SetString("Appointment", System.Text.Json.JsonSerializer.Serialize(date));
 
             // Services selected for calcul the duration
             var prestationIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(HttpContext.Session.GetString("Prestations"));
@@ -68,24 +70,63 @@ namespace SiteJu.Controllers
             // Search all appointments on the selected date
             var rdvAtDate = _context.RDVS
                 .Where(r => r.At.Date == date.Date) // Appointments filter by selected date
-                .Select(rdv => new {
-
-                At = rdv.At,
-                duration = rdv.Prestations.Select(presta => presta.Duration),
-
+                .Select(rdv => new
+                {
+                    At = rdv.At,
+                    duration = rdv.Prestations.Select(presta => presta.Duration.TotalMilliseconds),
                 }).ToList();
+
+            // Sum of duration service
+            var durationA = TimeSpan.FromMilliseconds(rdvAtDate.Sum(p => p.duration.Sum()));
+
 
             // Search duration of the selected service in BDD
             var durationMs = _context.Prestations
                 .Where(d => prestationIds.Contains(d.ID)) // Filter by Id
                 .Select(duration => duration.Duration.TotalMilliseconds).ToList();
 
-            // Sum of durations
+            // initalizing values
             var duration = TimeSpan.FromMilliseconds(durationMs.Sum());
+            int startWorkHour = 8, endWorkHour = 18, timeSlotDuration = 30;
+            var minutesWorkDay = (endWorkHour - startWorkHour) * 60;
+            var timeSlotCountDay = minutesWorkDay / timeSlotDuration;
+
+
+
+            // ---- Découper les (endWorkHour - startWorkHour) en créneaux de timeSlot minutes
+            var slotOccupied = rdvAtDate.Select(p => new
+            {
+                slotStartIdx = p.At.AddHours(-startWorkHour).TimeOfDay.TotalMinutes / timeSlotDuration,
+                slotCount = (int)TimeSpan.FromMilliseconds(p.duration.Sum()).TotalMinutes / timeSlotDuration
+            });
+
 
             // Trouver un créneau dans RDV At Date de la durée calculée précédemment
+            var slotAvailable = new List<DateTime>(timeSlotCountDay);
+            for (int i = 0; i < timeSlotCountDay; i++)
+            {
+                var appointment = slotOccupied.FirstOrDefault(p => p.slotStartIdx == i);
+                if (appointment == null)
+                {
+                    var start = i * (timeSlotDuration / 60d);
+                    slotAvailable.Add(
+                        new DateTime(
+                            date.Year,
+                            date.Month,
+                            date.Day,
+                            (int)Math.Truncate(start) + startWorkHour,
+                            (int)Math.Abs(Math.Min(Math.Truncate(start) - start, 0) * 60),
+                            0
+                        )
+                    );
+                }
+                else
+                {
+                    i += appointment.slotCount;
+                }
+            }
 
-            return Json(new {});
+            return Json(slotAvailable);
         }
 
         [HttpGet("Appointment")]
@@ -99,8 +140,8 @@ namespace SiteJu.Controllers
         [HttpPost("ValidAppointment")]
         public IActionResult ValidAppointment([FromBody] DateTime date)
         {
-            // Stocker la date séléctionné dans une session
-            HttpContext.Session.SetString("Appointment", System.Text.Json.JsonSerializer.Serialize(date));
+            //// Stocker la date séléctionné dans une session
+            //HttpContext.Session.SetString("Appointment", System.Text.Json.JsonSerializer.Serialize(date));
 
 
             return RedirectToAction("Summary");

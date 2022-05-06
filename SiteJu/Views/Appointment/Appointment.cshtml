@@ -1,7 +1,9 @@
-﻿@{
+﻿
+@{
     ViewData["Title"] = "Prendre rendez-vous - EJ Nails";
     Layout = "_Layout";
 }
+
 
 <div class="container">
     <h1>Prendre rendez-vous</h1>
@@ -10,14 +12,21 @@
     <a asp-controller="Appointment" asp-action="Index"><button class="btn btn-primary">Précédent</button></a>
 
 
-    @using (Html.BeginForm("ValidAppointment", "Appointment", FormMethod.Post))
+    @using (Html.BeginForm("SearchAppointment", "Appointment", FormMethod.Post))
     {
-        <input type="date" id="date" name="date" onchange="dateAppointment()"
-               value="@DateTime.Now">
+<div>
+    <input type="date" id="date" name="date" onchange="dateAppointment()"
+           value="@DateTime.Now">
 
-        <button class="btn btn-primary" type="submit">Suivant</button>
+    <select id="search-slot-result" name="SlotId" class="form-select" aria-label="Default select example">
+
+</div>
+
+
 
     }
+
+
 
 </div>
 
@@ -37,8 +46,26 @@
         let dateValue = document.getElementById('date').value;
 
         fetch("SearchAppointment?date=" + dateValue).then(async response => {
-            let data = await response.json()
-            console.log(data);
+            let slots = await response.json();
+
+            console.log(slots);
+
+            slots.forEach(slot => {
+
+                let option = document.createElement("option");
+
+                option.value = slot
+                option.innerHTML = new Intl.DateTimeFormat('fr-fr', { timeStyle: 'short' }).format(new Date(slot))
+
+                document.getElementById("search-slot-result").appendChild(option);
+
+            });
+
+
         })
+
+
     }
+
+
 </script>

@@ -10,6 +10,7 @@ namespace SiteJu.Data
         public string Lastname { get; set; }
         public string Telephone { get; set; }
         public string Email{ get; set; }
+        public string Information { get; set; }
 
         public IEnumerable<RDV> RDV { get; set; }
 
