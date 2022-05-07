@@ -61,8 +61,6 @@ namespace SiteJu.Controllers
         [HttpGet("SearchAppointment")]
         public IActionResult SearchAppointment([FromQuery(Name = "date")]DateTime date)
         {
-            // Stocker la date séléctionné dans une session
-            HttpContext.Session.SetString("Appointment", System.Text.Json.JsonSerializer.Serialize(date));
 
             // Services selected for calcul the duration
             var prestationIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(HttpContext.Session.GetString("Prestations"));
@@ -90,7 +88,6 @@ namespace SiteJu.Controllers
             int startWorkHour = 8, endWorkHour = 18, timeSlotDuration = 30;
             var minutesWorkDay = (endWorkHour - startWorkHour) * 60;
             var timeSlotCountDay = minutesWorkDay / timeSlotDuration;
-
 
 
             // ---- Découper les (endWorkHour - startWorkHour) en créneaux de timeSlot minutes
@@ -132,17 +129,17 @@ namespace SiteJu.Controllers
         [HttpGet("Appointment")]
         public IActionResult Appointment()
         {
-
             return View();
         }
 
         // Get the date in form
         [HttpPost("ValidAppointment")]
-        public IActionResult ValidAppointment([FromBody] DateTime date)
+        public IActionResult ValidAppointment(DateTime app)
         {
-            //// Stocker la date séléctionné dans une session
-            //HttpContext.Session.SetString("Appointment", System.Text.Json.JsonSerializer.Serialize(date));
 
+
+            // Stocker la date séléctionné dans une session
+            HttpContext.Session.SetString("Appointment", app.ToString());
 
             return RedirectToAction("Summary");
         }
@@ -151,29 +148,29 @@ namespace SiteJu.Controllers
         public IActionResult Summary()
         {
             // Recupérer les données du cookie
-            var sessionPrestationsString = HttpContext.Session.GetString("Prestations");
-            var sessionAppointmentString = HttpContext.Session.GetString("Appointment");
+            //var sessionPrestationsString = HttpContext.Session.GetString("Prestations");
+            //var sessionAppointmentString = HttpContext.Session.GetString("Appointment");
 
-            var sessionPrestations = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
-            var sessionAppointment = System.Text.Json.JsonSerializer.Deserialize<DateTime>(sessionAppointmentString);
+            //var sessionPrestations = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
+            //var sessionAppointment = System.Text.Json.JsonSerializer.Deserialize<DateTime>(sessionAppointmentString);
 
-            // Récupérer le nom de la presta
-            var prestations = _context.Prestations.Where(p => sessionPrestations.Contains(p.ID)).ToList();
+            //// Récupérer le nom de la presta
+            //var prestations = _context.Prestations.Where(p => sessionPrestations.Contains(p.ID)).ToList();
 
-            // Créer un RDVViewModel
-            var rdv  = new RDVViewModel
-            {
-                Prestation = prestations.Select(p => new PrestationViewModel
-                {
-                    Name = p.Name,
-                    Price = p.Price,
+            //// Créer un RDVViewModel
+            //var rdv  = new RDVViewModel
+            //{
+            //    Prestation = prestations.Select(p => new PrestationViewModel
+            //    {
+            //        Name = p.Name,
+            //        Price = p.Price,
 
-                }).ToList(),
-                At = sessionAppointment,
+            //    }).ToList(),
+            //    At = sessionAppointment,
 
-            };
+            //};
 
-            return View(rdv);
+            return View();
         }
 
 
