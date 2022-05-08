@@ -15,12 +15,11 @@
     @using (Html.BeginForm("ValidAppointment", "Appointment", FormMethod.Post))
     {
         <div>
-            <input type="date" id="date" name="date" onchange="dateAppointment()"
-                   value="@DateTime.Now">
+            <input type="date" id="date" name="date" onchange="dateAppointment()" value="@DateTime.Now" class="form-select">
 
             @*<select id="search-slot-result" name="SlotTime" class="form-select" aria-label="Default select example" />*@
 
-            @Html.ListBoxFor(p => p, Enumerable.Empty<SelectListItem>(), new { id = "search-slot-result" })
+            @Html.DropDownListFor(p => p, Enumerable.Empty<SelectListItem>(), new { id = "search-slot-result", name = "SlotTime", @class= "form-select" })
                 
 
         </div>

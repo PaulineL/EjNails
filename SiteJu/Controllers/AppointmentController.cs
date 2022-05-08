@@ -57,7 +57,11 @@ namespace SiteJu.Controllers
         }
 
 
-        // Get all apppointments
+        /// <summary>
+        ///     Get all available apppointments for a given date
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
         [HttpGet("SearchAppointment")]
         public IActionResult SearchAppointment([FromQuery(Name = "date")]DateTime date)
         {
@@ -85,7 +89,7 @@ namespace SiteJu.Controllers
 
             // initalizing values
             var duration = TimeSpan.FromMilliseconds(durationMs.Sum());
-            int startWorkHour = 8, endWorkHour = 18, timeSlotDuration = 30;
+            int startWorkHour = 8, endWorkHour = 18, timeSlotDuration = 15;
             var minutesWorkDay = (endWorkHour - startWorkHour) * 60;
             var timeSlotCountDay = minutesWorkDay / timeSlotDuration;
 
@@ -134,12 +138,12 @@ namespace SiteJu.Controllers
 
         // Get the date in form
         [HttpPost("ValidAppointment")]
-        public IActionResult ValidAppointment(DateTime app)
+        public IActionResult ValidAppointment(DateTime slotTime)
         {
 
 
             // Stocker la date séléctionné dans une session
-            HttpContext.Session.SetString("Appointment", app.ToString());
+            HttpContext.Session.SetString("Appointment", slotTime.ToString());
 
             return RedirectToAction("Summary");
         }
@@ -148,32 +152,47 @@ namespace SiteJu.Controllers
         public IActionResult Summary()
         {
             // Recupérer les données du cookie
-            //var sessionPrestationsString = HttpContext.Session.GetString("Prestations");
-            //var sessionAppointmentString = HttpContext.Session.GetString("Appointment");
+            var sessionPrestationsString = HttpContext.Session.GetString("Prestations");
+            var sessionAppointmentString = HttpContext.Session.GetString("Appointment");
 
-            //var sessionPrestations = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
-            //var sessionAppointment = System.Text.Json.JsonSerializer.Deserialize<DateTime>(sessionAppointmentString);
+            if (string.IsNullOrEmpty(sessionPrestationsString)|| string.IsNullOrEmpty(sessionAppointmentString))
+            {
+                throw new ArgumentException();
+            }
 
-            //// Récupérer le nom de la presta
-            //var prestations = _context.Prestations.Where(p => sessionPrestations.Contains(p.ID)).ToList();
+            var prestationIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
+            var slotTime = DateTime.Parse(sessionAppointmentString);
+
+
+            // Récupérer le nom de la presta
+            var prestations = _context.Prestations.Where(p => prestationIds.Contains(p.ID)).ToList();
 
             //// Créer un RDVViewModel
-            //var rdv  = new RDVViewModel
-            //{
-            //    Prestation = prestations.Select(p => new PrestationViewModel
-            //    {
-            //        Name = p.Name,
-            //        Price = p.Price,
+            var rdv  = new RDVViewModel
+            {
+                Prestation = prestations.Select(p => new PrestationViewModel
+                {
+                    Name = p.Name,
+                    Price = p.Price,
+                    Duration = Convert.ToInt32(p.Duration.TotalMinutes),
+                }).ToList(),
+                At = slotTime,
 
-            //    }).ToList(),
-            //    At = sessionAppointment,
 
-            //};
+            };
+
+
+            return View(rdv);
+        }
+
+        [HttpGet("RegisterAppointment")]
+        public IActionResult Register(RDVViewModel rdv)
+        {
+            // Avant d'enrigistrer le RDV, verifier une derniere fois que le creneau est toujours disponible,
+            // pour gerer les accès concurent au créneau
 
             return View();
         }
-
-
     }
 }
 

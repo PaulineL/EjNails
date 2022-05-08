@@ -4,14 +4,24 @@
     <h1>Prendre rendez-vous</h1>
     <h2>3 - Récapitulatif</h2>
 
-    <p>@Model.At</p>
+    <h2>Date et heure du RDV:</h2>
+    @Model.At
+
+    jusqua
+
+    @(Model.At + TimeSpan.FromMinutes(Model.Prestation.Sum(p => p.Duration)))
+
+    <h2>Prestation : </h2>
 
     @foreach (var presta in Model.Prestation)
     {
         <p>@presta.Name</p>
-        <p>@presta.Price</p>
-
+        <p>@presta.Price €</p>
     }
 
     @*Il faut aussi calculer les prestations entre elles pour le total*@
+    <h2>Total de la prestation = @Model.Prestation.Sum(p => p.Price)€</h2>
+
+
+
 </div>
