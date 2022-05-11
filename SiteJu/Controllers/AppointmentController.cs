@@ -82,7 +82,7 @@ namespace SiteJu.Controllers
 
             double durationMs = GetServiceDuration(serviceIds);
 
-            List<DateTime> slotAvailable = GetAvailableSlots(date, durationMs);
+            List<DateTime> slotAvailable = GetAvailableSlots(date, TimeSpan.FromMilliseconds(durationMs));
 
             return Json(slotAvailable);
         }
@@ -112,8 +112,8 @@ namespace SiteJu.Controllers
             var sessionAppointmentString = HttpContext.Session.GetString("Appointment");
 
             if (string.IsNullOrEmpty(sessionPrestationsString)|| string.IsNullOrEmpty(sessionAppointmentString))
-            {
-                throw new ArgumentException();
+            { 
+                            throw new ArgumentException();
             }
 
             var prestationIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
@@ -154,77 +154,61 @@ namespace SiteJu.Controllers
         {
             // Avant d'enregistrer le RDV, verifier une derniere fois que le creneau est toujours disponible,
             // pour gerer les accès concurrent au créneau
-            var serviceIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(HttpContext.Session.GetString("Services"));
-
-            double durationMs = GetServiceDuration(serviceIds);
-
-            var availableSlots = GetAvailableSlots(rdvForm.At.Date, durationMs);
-
-            foreach(var slot in availableSlots)
-            {
-
-                
-            }
-
-            /////////////////////////////////////////
-            /////////////////////////////////////////
-            ///
-            ///   Verifier si le creneau est toujours dispo ici
-            /// 
-            /////////////////////////////////////////
-            /////////////////////////////////////////
-
-
-
 
             // Recupérer les données du cookie
             var sessionPrestationsString = HttpContext.Session.GetString("Services");
             var sessionAppointmentString = HttpContext.Session.GetString("Appointment");
+
+
+            var servicesIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
+
+            double durationMs = GetServiceDuration(servicesIds);
+
+            var availableSlots = GetAvailableSlots(rdvForm.At.Date, TimeSpan.FromMilliseconds(durationMs));
+
 
             if (string.IsNullOrEmpty(sessionPrestationsString) || string.IsNullOrEmpty(sessionAppointmentString))
             {
                 throw new ArgumentException();
             }
 
-            var prestationIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
+            //prbg
             var slotTime = DateTime.Parse(sessionAppointmentString);
 
-
-            // Récupérer le nom de la presta
-            var prestations = _context.Prestations.Where(p => prestationIds.Contains(p.ID)).ToList();
-
-            // Attention : ne pas oublier les clients
-            var appointment = new RDV
+            // SLOT IS AVAILABLE ?
+            if (availableSlots.Any(slot => slot == slotTime))
             {
-                Prestations = prestations.ToList(),
-                At = slotTime,
 
-            };
-
-            _context.RDVS.Add(appointment);
-            _context.SaveChanges();
-
-            if (appointment.Id != 0)
-            {
-                return RedirectToAction("Index");
+                Console.WriteLine("ERROR");
             }
-            else
-            {
-                return View(appointment);
-            }
+
+                // Récupérer les prestations
+                var prestations = _context.Prestations.Where(p => servicesIds.Contains(p.ID)).ToList();
+
+                var appointment = new RDV
+                {
+                    Prestations = prestations.ToList(),
+                    At = slotTime,
+                    ClientId = 1,
+                };
+
+                _context.RDVS.Add(appointment);
+                _context.SaveChanges();
+
+
+            return Redirect("Test");
 
         }
 
         private double GetServiceDuration(int[] serviceIds)
         {
             // Search duration of the selected service in BDD
-            var durationMs = _context.Prestations
+            return _context.Prestations
                 .Where(d => serviceIds.Contains(d.ID)) // Filter by Id
-                .Select(duration => duration.Duration.TotalMilliseconds).Sum();
-            return durationMs;
+                .Select(duration => duration.Duration.TotalMilliseconds).ToList().Sum();
         }
 
-        private List<DateTime> GetAvailableSlots(DateTime date, double durationMs) //remplacer en TimeSpan 'durationMs'
+        private List<DateTime> GetAvailableSlots(DateTime date, TimeSpan duration)
         {
 
             // Search all appointments on the selected date
@@ -237,7 +221,6 @@ namespace SiteJu.Controllers
                 }).ToList();
 
             // initalizing values
-            var duration = TimeSpan.FromMilliseconds(durationMs);
             int startWorkHour = 8, endWorkHour = 18, timeSlotDuration = 15;
             var minutesWorkDay = (endWorkHour - startWorkHour) * 60;
             var timeSlotCountDay = minutesWorkDay / timeSlotDuration;
