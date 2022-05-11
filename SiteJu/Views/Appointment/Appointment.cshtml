@@ -9,7 +9,7 @@
     <h1>Prendre rendez-vous</h1>
     <h2>2 - Date et heure du rdv</h2>
 
-    <a asp-controller="Appointment" asp-action="Index"><button class="btn btn-primary">Précédent</button></a>
+    <a asp-controller="Appointment" asp-action="Services"><button class="btn btn-primary">Précédent</button></a>
 
 
     @using (Html.BeginForm("ValidAppointment", "Appointment", FormMethod.Post))
@@ -21,7 +21,6 @@
 
             @Html.DropDownListFor(p => p, Enumerable.Empty<SelectListItem>(), new { id = "search-slot-result", name = "SlotTime", @class= "form-select" })
                 
-
         </div>
 
         <button class="btn btn-primary" type="submit">Suivant</button>

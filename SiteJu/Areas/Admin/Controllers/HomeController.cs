@@ -30,8 +30,8 @@ namespace SiteJu.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet("Prestations")]
-        public IActionResult Prestations()
+        [HttpGet("Services")]
+        public IActionResult Services()
         {
             var prestations = _context.Prestations.Select(p => new PrestationViewModel
             {
