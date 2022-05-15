@@ -8,6 +8,8 @@ using SiteJu.Data;
 using SiteJu.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace SiteJu.Controllers
 {
@@ -16,11 +18,13 @@ namespace SiteJu.Controllers
     public class AppointmentController : Controller
     {
         private readonly ReservationContext _context;
+        private readonly UserManager<Client> _userManager;
 
-        public AppointmentController(ReservationContext context)
+        public AppointmentController(ReservationContext context, UserManager<Client> userManager)
         {
             // BDD
             _context = context;
+            _userManager = userManager;
 
         }
 
@@ -75,7 +79,7 @@ namespace SiteJu.Controllers
         /// <param name="date"></param>
         /// <returns></returns>
         [HttpGet("SearchAppointment")]
-        public IActionResult SearchAppointment([FromQuery(Name = "date")]DateTime date)
+        public IActionResult SearchAppointment([FromQuery(Name = "date")] DateTime date)
         {
 
             var serviceIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(HttpContext.Session.GetString("Services"));
@@ -111,9 +115,9 @@ namespace SiteJu.Controllers
             var sessionPrestationsString = HttpContext.Session.GetString("Services");
             var sessionAppointmentString = HttpContext.Session.GetString("Appointment");
 
-            if (string.IsNullOrEmpty(sessionPrestationsString)|| string.IsNullOrEmpty(sessionAppointmentString))
-            { 
-                            throw new ArgumentException();
+            if (string.IsNullOrEmpty(sessionPrestationsString) || string.IsNullOrEmpty(sessionAppointmentString))
+            {
+                throw new ArgumentException();
             }
 
             var prestationIds = System.Text.Json.JsonSerializer.Deserialize<int[]>(sessionPrestationsString);
@@ -124,10 +128,10 @@ namespace SiteJu.Controllers
             var prestations = _context.Prestations.Where(p => prestationIds.Contains(p.ID)).ToList();
 
             // Créer un RDVViewModel
-            
+
             // * Il faut que je m'occupe des clients également * //s
 
-            var rdv  = new RDVViewModel
+            var rdv = new RDVViewModel
             {
                 Prestation = prestations.Select(p => new PrestationViewModel
                 {
@@ -150,7 +154,7 @@ namespace SiteJu.Controllers
         }
 
         [HttpPost("ValidRDV")]
-        public IActionResult ValidRDV(RDVViewModel rdvForm)
+        public async Task<IActionResult> ValidRDV(RDVViewModel rdvForm)
         {
             // Avant d'enregistrer le RDV, verifier une derniere fois que le creneau est toujours disponible,
             // pour gerer les accès concurrent au créneau
@@ -178,23 +182,26 @@ namespace SiteJu.Controllers
             // SLOT IS AVAILABLE ?
             if (availableSlots.Any(slot => slot == slotTime))
             {
-
-                Console.WriteLine("ERROR");
+                Console.WriteLine("Slot is already occupied");
+                return View();
             }
 
-                // Récupérer les prestations
-                var prestations = _context.Prestations.Where(p => servicesIds.Contains(p.ID)).ToList();
+            // Récupérer les prestations
+            var prestations = _context.Prestations.Where(p => servicesIds.Contains(p.ID)).ToList();
+            Client applicationUser = await _userManager.GetUserAsync(User);
 
-                var appointment = new RDV
-                {
-                    Prestations = prestations.ToList(),
-                    At = slotTime,
-                    ClientId = 1,
-                };
 
-                _context.RDVS.Add(appointment);
-                _context.SaveChanges();
+            var appointment = new RDV
+            {
+                At = slotTime,
+                ClientId = 1
+            };
 
+            _context.RDVS.Add(appointment);
+
+            appointment.Prestations = prestations;
+
+            _context.SaveChanges();
 
             return Redirect("Test");
 

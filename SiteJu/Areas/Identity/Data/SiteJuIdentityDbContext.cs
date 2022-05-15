@@ -1,10 +1,11 @@
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using SiteJu.Data;
 
 namespace SiteJu.Areas.Identity.Data;
 
-public class SiteJuIdentityDbContext : IdentityDbContext<IdentityUser>
+public class SiteJuIdentityDbContext : IdentityDbContext<Client, IdentityRole<int>, int>
 {
     public SiteJuIdentityDbContext(DbContextOptions<SiteJuIdentityDbContext> options)
         : base(options)

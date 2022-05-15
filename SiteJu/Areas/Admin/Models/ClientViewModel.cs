@@ -15,6 +15,8 @@ namespace SiteJu.Areas.Admin.Models
         public string Telephone { get; set; }
         [DisplayName("Email")]
         public string Email { get; set; }
+        [DisplayName("Mot de passe")]
+        public string Password { get; set; }
         [DisplayName("Note")]
         public string Information { get; set; }
 

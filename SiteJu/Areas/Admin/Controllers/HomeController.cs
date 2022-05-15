@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SiteJu.Areas.Admin.Models;
+using SiteJu.Areas.Identity.Data;
 using SiteJu.Data;
 using SiteJu.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 
@@ -16,12 +18,14 @@ namespace SiteJu.Areas.Admin.Controllers
     public class HomeController : Controller
     {
         private readonly ReservationContext _context;
+        private readonly SiteJuIdentityDbContext _userContext;
 
         // Constructeur : fonction appellée quand on instance un objet (new)
         // injection de dépendance dans le paramêtre du constructeur
-        public HomeController(ReservationContext context)
+        public HomeController(ReservationContext context, SiteJuIdentityDbContext userContext)
         {
             _context = context;
+            _userContext = userContext;
         }
 
         [HttpGet("")]
@@ -30,8 +34,8 @@ namespace SiteJu.Areas.Admin.Controllers
             return View();
         }
 
-        [HttpGet("Services")]
-        public IActionResult Services()
+        [HttpGet("Prestations")]
+        public IActionResult Prestations()
         {
             var prestations = _context.Prestations.Select(p => new PrestationViewModel
             {
@@ -95,20 +99,25 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpPost("CreatePrestation")]
         public IActionResult CreatePrestation(PrestationViewModel prestationVM)
         {
-            var selectedOptionIds = prestationVM.Options.Where(so => so.IsSelected).Select(so => so.Id).ToList();
-            var options = _context.PrestationOptions.Where(po => selectedOptionIds.Contains(po.ID));
+            ICollection<PrestationOption> options = null;
+            if (prestationVM.Options is not null && prestationVM.Options.Any())
+            {
+                var selectedOptionIds = prestationVM.Options.Where(so => so.IsSelected).Select(so => so.Id).ToList();
+                options = _context.PrestationOptions.Where(po => selectedOptionIds.Contains(po.ID)).ToList();
+            }
+
             // Je vais chercher les catégories dans la BDD
             // ___________________________________________________________________________________________
             // On ne remonte que les category selectionnés dans le formulaire (voir ligne 100)
             // avec la liste des ids des category selectionnés dans le formulaires,
             // on filtre le resultat de la base de données
-            var categorys = _context.PrestationCategorys.Where(pc => selectedOptionIds.Contains(pc.Id));
+
             var prestation = new Prestation
             {
                 Name = prestationVM.Name,
                 Price = prestationVM.Price,
                 Duration = TimeSpan.FromMinutes(prestationVM.Duration),
-                OptionsAvailable = options.ToList(),
+                OptionsAvailable = options?.ToList(),
                 CategoryId = prestationVM.Category.Id
             };
 
@@ -208,13 +217,13 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpGet("Clients")]
         public IActionResult Clients()
         {
-            var clients = _context.Clients.Select(client => new ClientViewModel
+            var clients = _userContext.Users.Select(client => new ClientViewModel
             {
                 Email = client.Email,
                 Firstname = client.Firstname,
-                ID = client.ID,
+                ID = client.Id,
                 Lastname = client.Lastname,
-                Telephone = client.Telephone,
+                Telephone = client.PhoneNumber,
             });
             return View(clients);
         }
@@ -233,14 +242,14 @@ namespace SiteJu.Areas.Admin.Controllers
             {
                 Firstname = clientVM.Firstname,
                 Lastname = clientVM.Lastname,
-                Telephone = clientVM.Telephone,
+                PhoneNumber = clientVM.Telephone,
                 Email = clientVM.Email,
-                Information = clientVM.Information,
+                Note = clientVM.Information,
             };
 
-            _context.Clients.Add(client);
-            _context.SaveChanges();
-            if (client.ID != 0)
+            _userContext.Users.Add(client);
+            _userContext.SaveChanges();
+            if (client.Id != 0)
             {
                 return Redirect("Clients");
             }
@@ -253,15 +262,15 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpGet("EditClient")]
         public IActionResult EditClient([FromQuery] int id)
         {
-            var client = _context.Clients.Find(id);
+            var client = _userContext.Users.Find(id);
             var clientVm = new ClientViewModel
             {
-                ID = client.ID,
+                ID = client.Id,
                 Firstname = client.Firstname,
                 Lastname = client.Lastname,
-                Telephone = client.Telephone,
+                Telephone = client.PhoneNumber,
                 Email = client.Email,
-                Information = client.Information,
+                Information = client.Note,
             };
             return View(clientVm);
         }
@@ -271,16 +280,16 @@ namespace SiteJu.Areas.Admin.Controllers
         {
             var client = new Client
             {
-                ID = clientForm.ID,
+                Id = clientForm.ID,
                 Firstname = clientForm.Firstname,
                 Lastname = clientForm.Lastname,
-                Telephone = clientForm.Telephone,
+                PhoneNumber = clientForm.Telephone,
                 Email = clientForm.Email,
-                Information = clientForm.Information,
+                Note = clientForm.Information,
             };
 
-            _context.Clients.Update(client);
-            _context.SaveChanges();
+            _userContext.Users.Update(client);
+            _userContext.SaveChanges();
 
             return Redirect("Clients");
         }
@@ -288,8 +297,8 @@ namespace SiteJu.Areas.Admin.Controllers
         [HttpPost("DeleteClient")]
         public IActionResult DeleteClient(int id)
         {
-            _context.Clients.Remove(new Client { ID = id });
-            _context.SaveChanges();
+            _userContext.Users.Remove(new Client { Id = id });
+            _userContext.SaveChanges();
 
             return Redirect("Clients");
 
@@ -329,10 +338,10 @@ namespace SiteJu.Areas.Admin.Controllers
                 lastname = String.Empty;
             }
             var filter = lastname.ToUpperInvariant();
-            var filteredClient = _context.Clients.Where(client => EF.Functions.Like(client.Lastname, $"%{filter}%"));
+            var filteredClient = _userContext.Users.Where(client => EF.Functions.Like(client.Lastname, $"%{filter}%"));
             var clients = filteredClient.Select(client => new ClientViewModel
             {
-                ID = client.ID,
+                ID = client.Id,
                 Lastname = client.Lastname,
                 Firstname = client.Firstname
             }).Take(50);
@@ -379,7 +388,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 {
                     Firstname = rdvForm.Client.Firstname,
                     Lastname = rdvForm.Client.Lastname,
-                    Telephone = rdvForm.Client.Telephone,
+                    PhoneNumber = rdvForm.Client.Telephone,
                     Email = rdvForm.Client.Email
 
                 };
@@ -416,7 +425,7 @@ namespace SiteJu.Areas.Admin.Controllers
                 Id = rdv.Id,
                 At = rdv.At,
                 // Je selectionne les prestations pour créer un PrestaVM
-                Client = new ClientViewModel{ ID= rdv.Client.ID, Firstname=rdv.Client.Firstname, Lastname=rdv.Client.Lastname, Telephone=rdv.Client.Telephone, Email= rdv.Client.Email},
+                Client = new ClientViewModel{ ID= rdv.Client.Id, Firstname=rdv.Client.Firstname, Lastname=rdv.Client.Lastname, Telephone=rdv.Client.PhoneNumber, Email= rdv.Client.Email},
                 Prestation = prestations.Select(presta => new PrestationViewModel
                 {
                     Id = presta.ID,

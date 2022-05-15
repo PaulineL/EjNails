@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Connexion";
+}
+
+@model ClientViewModel
+
+<div class="container">
+    <h1>Connexion</h1>
+
+    @using (Html.BeginForm("Login", "User", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
+        </div>
+        <button type="submit" class="btn btn-primary">Se connecter</button>
+    }
+
+    <a asp-controller="User" asp-action="Register"><button class="btn btn-primary">Créer un compte</button></a>
+
+
+</div>

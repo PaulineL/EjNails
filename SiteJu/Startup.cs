@@ -85,7 +85,8 @@ namespace SiteJu
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
 
             services.AddDbContext<SiteJuIdentityDbContext>(options => options.UseSqlite(connectionString));
-            services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<SiteJuIdentityDbContext>();
+            services.AddDefaultIdentity<Client>()
+                .AddEntityFrameworkStores<SiteJuIdentityDbContext>();
 
             // Sessions cookies
             services.AddDistributedMemoryCache();

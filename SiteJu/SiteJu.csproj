@@ -26,6 +26,8 @@
     <None Remove="Microsoft.AspNetCore.Authentication.AzureAD.UI" />
     <None Remove="Views\Appointment\" />
     <None Remove="Areas\Admin\Views\Shared\" />
+    <None Remove="Views\User\" />
+    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.1" />
@@ -62,5 +64,7 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Views\Appointment\" />
     <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Views\User\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 </Project>

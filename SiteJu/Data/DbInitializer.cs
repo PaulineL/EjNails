@@ -14,12 +14,6 @@ namespace SiteJu.Data
                 return;
             }
 
-            var clients = new Client[]
-            {
-                new Client{ID = 1, Firstname="Pauline",Lastname="Lopez",Telephone="0670809090",Email="popo@hotmail.fr"},
-                new Client{ID = 2, Firstname="Olivier",Lastname="Houssin",Telephone="0690809090",Email="olive@hotmail.fr"}
-            };
-
             var prestationCategory = new[]
             {
                 new PrestationCategory
@@ -126,35 +120,9 @@ namespace SiteJu.Data
                 }
             };
 
-            var rdvs = new[]
-            {
-                new RDV
-                {
-                    Id = 1,
-                    ClientId = 1,
-                    Prestations = new List<Prestation>() { prestations[0] },
-                    At = DateTime.Now.AddDays(1)
-                },
-                new RDV
-                {
-                    Id = 2,
-                    ClientId = 2,
-                    Prestations = new List<Prestation>() { prestations[1] },
-                    At = DateTime.Now.AddDays(2).AddHours(-4)
-                },
-                new RDV
-                {
-                    Id = 3,
-                    ClientId = 2,
-                    Prestations = new List<Prestation>() { prestations[0], prestations[1] },
-                    At = DateTime.Now.AddHours(1)
-                },
-            };
 
-            context.Clients.AddRange(clients);
             context.Prestations.AddRange(prestations);
             context.PrestationOptions.AddRange(prestationOptions);
-            context.RDVS.AddRange(rdvs);
 
             context.SaveChanges();
         }

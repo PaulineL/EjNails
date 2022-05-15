@@ -1,0 +1,38 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Création du compte utilisateur";
+}
+
+@*// Creer le formulaire d'enregistrement '*@
+@model ClientViewModel
+
+<div class="container">
+    <h1>Créer un compte client</h1>
+
+    @using (Html.BeginForm("RegisterPost", "User", FormMethod.Post))
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.Firstname, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Firstname, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Lastname, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Lastname, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Telephone, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Telephone, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.Password, new { @class = "form-label" })
+            @Html.TextBoxFor(model => model.Password, new { @class = "form-control" })
+        </div>
+        <button type="submit" class="btn btn-primary">Envoyer</button>
+    }
+</div>

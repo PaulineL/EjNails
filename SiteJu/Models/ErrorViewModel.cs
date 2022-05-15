@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace SiteJu.Models
 {
@@ -7,5 +7,7 @@ namespace SiteJu.Models
         public string RequestId { get; set; }
 
         public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        public string Message { get; set; }
     }
 }

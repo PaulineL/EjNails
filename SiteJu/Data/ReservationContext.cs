@@ -15,7 +15,6 @@ namespace SiteJu.Data
     // Un jeu d’entités correspond généralement à une table de base de données.
     // Une entité correspond à une ligne dans la table.
 
-        public DbSet<Client> Clients { get; set; }
         public DbSet<RDV> RDVS { get; set; }
         public DbSet<Prestation> Prestations { get; set; }
         public DbSet<PrestationOption> PrestationOptions { get; set; }
@@ -28,6 +27,11 @@ namespace SiteJu.Data
                 .HasMany(p => p.Prestations)
                 .WithMany(r => r.RDVS)
                 .UsingEntity(rp => rp.ToTable("RDVPrestations"));
+
+            modelBuilder.Entity<RDV>()
+                .HasOne(p => p.Client)
+                .WithMany(p => p.RDV)
+                .HasForeignKey(rp => rp.ClientId);
 
             modelBuilder.Entity<PrestationOption>()
                 .HasMany(p => p.CompatibleWith)
